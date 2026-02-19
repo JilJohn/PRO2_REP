@@ -1,202 +1,158 @@
-# PRO2_REP
-Projektidee: Digitales Tagebuch – Deine persönliche Eintragsbibliothek
+# PRO2_REP – Digitales Tagebuch
+
+## Projektidee
+**Digitales Tagebuch – Deine persönliche Eintragsbibliothek**
 
 Viele Menschen möchten ihre Gedanken, Erlebnisse und Reflexionen regelmässig festhalten. Häufig werden Einträge jedoch in verschiedenen Notizbüchern, Apps oder einzelnen Dokumenten gespeichert, wodurch der Überblick verloren geht.
 
-Die Web-App bietet eine zentrale, digitale Lösung, um Tagebucheinträge strukturiert zu erfassen, zu verwalten und jederzeit wieder abzurufen.
+Diese Web-App bietet eine zentrale, digitale Lösung, um Tagebucheinträge strukturiert zu erfassen, zu verwalten und jederzeit wieder abzurufen.
 
-Ausgangslage
+---
 
-Das Digitale Tagebuch ist eine Web-App, mit der Nutzer ihre persönlichen Tagebucheinträge erstellen und verwalten können.
+## Ausgangslage
+
+Das **Digitale Tagebuch** ist eine Web-App, mit der Nutzer ihre persönlichen Tagebucheinträge erstellen und verwalten können.
 
 Der Nutzer kann:
 
-neue Einträge verfassen,
+- neue Einträge verfassen
+- bestehende Einträge bearbeiten oder löschen
+- vergangene Gedanken chronologisch einsehen
 
-bestehende Einträge bearbeiten oder löschen,
+---
 
-vergangene Gedanken chronologisch einsehen.
+## Problemstellung
 
-Problemstellung
+Gedanken und persönliche Notizen sind oft verstreut gespeichert.  
+Die App löst dieses Problem durch eine **zentrale Sammlung aller Tagebucheinträge** in einer übersichtlichen digitalen Umgebung.
 
-Gedanken und persönliche Notizen sind oft verstreut gespeichert. Die App löst dieses Problem durch eine zentrale Sammlung aller Tagebucheinträge in einer übersichtlichen digitalen Umgebung.
+---
 
-Ansichten der App
-Übersicht
+## Ansichten der App
 
-Liste aller Tagebucheinträge
+### Übersicht
+- Liste aller Tagebucheinträge
+- Anzeige von Titel und Datum
+- Schnelle Navigation zu einzelnen Einträgen
 
-Anzeige von Titel und Datum
+### Eintragsdetails
+- Vollständiger Tagebucheintrag
+- Titel
+- Datum
+- Inhalt / Text
 
-Schnelle Navigation zu einzelnen Einträgen
+### Journal / Einträge
+- Freitextfeld zum Schreiben persönlicher Gedanken
+- Bearbeiten bestehender Einträge
 
-Eintragsdetails
+### Dashboard
+- Grafische Darstellung der Einträge
+- Anzahl Einträge insgesamt
+- Visualisierung nach Zeitraum (z. B. pro Monat)
 
-Vollständiger Tagebucheintrag
+---
 
-Titel
+## Daten
 
-Datum
+### Eingelesen
+- Titel des Eintrags
+- Textinhalt
+- Datum
 
-Inhalt/Text
+### Gespeichert
+- Eintragsdatum
+- Inhalt des Tagebucheintrags
+- Benutzerzuordnung
 
-Journal / Einträge
+### Ausgegeben
+- Eintragsübersicht
+- Detailansicht eines Eintrags
+- Statistische Darstellung im Dashboard
 
-Freitextfeld zum Schreiben persönlicher Gedanken
+---
 
-Bearbeiten bestehender Einträge
+## Funktionen für den Nutzer
 
-Dashboard
+- Registrierung eines Benutzerkontos
+- Login und Logout
+- Einträge hinzufügen
+- Einträge bearbeiten
+- Einträge löschen
+- Einträge lesen
+- Übersicht aller Einträge anzeigen
 
-Grafische Darstellung der Einträge
+---
 
-Anzahl Einträge insgesamt
+## Umsetzung mit Flask
 
-Visualisierung nach Zeitraum (z. B. pro Monat)
+### Backend
+- Flask (Python)
+- Routing
+- Datenverarbeitung
+- Benutzer-Authentifizierung
 
-Daten
-Eingelesen
+### Frontend
+- HTML
+- CSS
+- Einfache Benutzeroberfläche
 
-Titel des Eintrags
+---
 
-Textinhalt
+## Benutzerführung & Funktionen der App
 
-Datum
-
-Gespeichert
-
-Eintragsdatum
-
-Inhalt des Tagebucheintrags
-
-Benutzerzuordnung
-
-Ausgegeben
-
-Eintragsübersicht
-
-Detailansicht eines Eintrags
-
-Statistische Darstellung im Dashboard
-
-Funktionen für den Nutzer
-
-Registrierung eines Benutzerkontos
-
-Login und Logout
-
-Einträge hinzufügen
-
-Einträge bearbeiten
-
-Einträge löschen
-
-Einträge lesen
-
-Übersicht aller Einträge anzeigen
-
-Umsetzung mit Flask
-Backend
-
-Flask (Python)
-
-Routing
-
-Datenverarbeitung
-
-Benutzer-Authentifizierung
-
-Frontend
-
-HTML
-
-CSS
-
-einfache Benutzeroberfläche
-
-Benutzerführung & Funktionen der App
-Registrierung
-
+### Registrierung
 Bei der erstmaligen Nutzung registriert sich der Nutzer mit:
 
-Benutzername
-
-Passwort
+- Benutzername
+- Passwort
 
 Nach erfolgreicher Registrierung kann sich der Nutzer anmelden.
 
-Login
+---
 
-Der Nutzer meldet sich mit Benutzername und Passwort an und wird danach auf die Hauptseite weitergeleitet.
+### Login
+Der Nutzer meldet sich mit Benutzername und Passwort an und wird anschliessend auf die Hauptseite weitergeleitet.
 
-Navigation (4 Hauptbereiche)
-1. Neuer Eintrag
+---
 
-Der Nutzer erstellt einen neuen Tagebucheintrag:
+## Navigation (4 Hauptbereiche)
 
-Titel
+### 1. Neuer Eintrag
+Der Nutzer erstellt einen neuen Tagebucheintrag mit:
 
-Datum (automatisch oder manuell)
+- Titel
+- Datum (automatisch oder manuell)
+- Textinhalt
 
-Textinhalt
+---
 
-2. Übersicht
+### 2. Übersicht
+- Anzeige aller bisherigen Einträge
+- Chronologische Liste
 
-Anzeige aller bisherigen Einträge
+---
 
-chronologische Liste
+### 3. Dashboard
+Grafische Übersicht über:
 
-3. Dashboard
+- Anzahl Einträge
+- Einträge pro Zeitraum
 
-Grafische Übersicht:
+---
 
-Anzahl Einträge
+### 4. Logout
+- Nutzer kann sich jederzeit abmelden
+- Weiterleitung zur Login-Seite
 
-Einträge pro Zeitraum
+---
 
-4. Logout
+## Installation (geplant)
 
-Nutzer kann sich jederzeit abmelden
-
-Weiterleitung zur Login-Seite
-
-
-
-
-
-tagebuch-app/
-│
-├── app/
-│   ├── __init__.py        # Flask App Factory
-│   ├── routes.py          # Alle Routen (Views)
-│   ├── models.py          # Datenbankmodelle
-│   ├── forms.py           # Formulare (optional)
-│   │
-│   ├── templates/         # HTML Templates
-│   │   ├── base.html
-│   │   ├── login.html
-│   │   ├── register.html
-│   │   ├── dashboard.html
-│   │   ├── overview.html
-│   │   └── new_entry.html
-│   │
-│   └── static/            # CSS / Bilder / JS
-│       ├── css/
-│       │   └── style.css
-│       └── images/
-│
-├── instance/
-│   └── database.db        # SQLite DB (nicht ins Git!)
-│
-├── migrations/            # optional (Flask-Migrate)
-│
-├── tests/                 # optionale Tests
-│   └── test_routes.py
-│
-├── config.py              # Konfiguration
-├── run.py                 # Startpunkt der App
-├── requirements.txt       # Python Dependencies
-├── .gitignore
-├── README.md
-└── LICENSE (optional)
-
+```bash
+git clone https://github.com/JilJohn/PRO2_REP.git
+cd PRO2_REP
+python -m venv venv
+source venv/bin/activate   # Mac/Linux
+venv\Scripts\activate      # Windows
+pip install -r requirements.txt
+python run.py
