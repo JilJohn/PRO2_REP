@@ -159,3 +159,44 @@ Einträge pro Zeitraum
 Nutzer kann sich jederzeit abmelden
 
 Weiterleitung zur Login-Seite
+
+
+
+
+
+tagebuch-app/
+│
+├── app/
+│   ├── __init__.py        # Flask App Factory
+│   ├── routes.py          # Alle Routen (Views)
+│   ├── models.py          # Datenbankmodelle
+│   ├── forms.py           # Formulare (optional)
+│   │
+│   ├── templates/         # HTML Templates
+│   │   ├── base.html
+│   │   ├── login.html
+│   │   ├── register.html
+│   │   ├── dashboard.html
+│   │   ├── overview.html
+│   │   └── new_entry.html
+│   │
+│   └── static/            # CSS / Bilder / JS
+│       ├── css/
+│       │   └── style.css
+│       └── images/
+│
+├── instance/
+│   └── database.db        # SQLite DB (nicht ins Git!)
+│
+├── migrations/            # optional (Flask-Migrate)
+│
+├── tests/                 # optionale Tests
+│   └── test_routes.py
+│
+├── config.py              # Konfiguration
+├── run.py                 # Startpunkt der App
+├── requirements.txt       # Python Dependencies
+├── .gitignore
+├── README.md
+└── LICENSE (optional)
+
