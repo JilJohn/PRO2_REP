@@ -36,14 +36,16 @@ Die App löst dieses Problem durch eine **zentrale Sammlung aller Tagebucheintr�
 - Schnelle Navigation zu einzelnen Einträgen
 
 ### Eintragsdetails
-- Vollständiger Tagebucheintrag
-- Titel
-- Datum
-- Inhalt / Text
+- Zeigt einen vollständigen Eintrag
+- Enthält: Titel, Datum, Textinhalt
+- Nur Ansicht – keine Bearbeitung möglich
+- Zweck: Detailliertes Lesen eines bestimmten Eintrags
 
 ### Journal / Einträge
-- Freitextfeld zum Schreiben persönlicher Gedanken
-- Bearbeiten bestehender Einträge
+- Bereich zum Schreiben neuer Einträge oder Bearbeiten bestehender Einträge
+- Enthält: Freitextfeld für Gedanken
+- Optionen zum Speichern, Bearbeiten und Löschen
+- Zweck: Aktiver Eingabe- und Bearbeitungsmodus
 
 ### Dashboard
 - Grafische Darstellung der Einträge
