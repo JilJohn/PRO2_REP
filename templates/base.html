@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Tagebuch{% endblock %}</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        nav a {
+            margin-right: 15px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        nav {
+            margin-bottom: 20px;
+        }
+    </style>
+
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+    {% if request.cookies.get('user') %}
+    <nav>
+        <a href="{{ url_for('overview') }}">✦ Tagebuch</a>
+        <a href="{{ url_for('overview') }}">Übersicht</a>
+        <a href="{{ url_for('new') }}">+ Eintrag</a>
+        <a href="{{ url_for('dashboard') }}">Dashboard</a>
+        <a href="{{ url_for('logout') }}">Abmelden</a>
+    </nav>
+    {% endif %}
+
+    <hr>
+
+    {% block content %}{% endblock %}
+
+</body>
+</html>
