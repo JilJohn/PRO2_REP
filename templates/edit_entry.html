@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Eintrag bearbeiten – Tagebuch{% endblock %}
+
+{% block content %}
+<h1>Eintrag bearbeiten</h1>
+<p>Eintrag #{{ entry.id }} — Änderungen werden sofort gespeichert</p>
+
+<a href="{{ url_for('overview') }}">← Zurück</a>
+
+{% if fehler %}
+    <p style="color:red;">{{ fehler }}</p>
+{% endif %}
+
+<form method="POST">
+    <label>Titel</label><br>
+    <input type="text" name="title" value="{{ entry.title }}" required><br><br>
+
+    <label>Datum</label><br>
+    <input type="date" name="date" value="{{ entry.date }}"><br><br>
+
+    <label>Inhalt</label><br>
+    <textarea name="content" rows="6" required>{{ entry.content }}</textarea><br><br>
+
+    <button type="submit">Änderungen speichern</button>
+</form>
+
+<br>
+
+<form method="POST" action="{{ url_for('delete', id=entry.id) }}">
+    <button type="submit" style="color:red;">Eintrag löschen</button>
+</form>
+
+<br>
+
+<a href="{{ url_for('overview') }}">Abbrechen</a>
+
+{% endblock %}
