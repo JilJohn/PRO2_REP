@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Anmelden – Tagebuch{% endblock %}
+
+{% block content %}
+
+<h1>✦ Tagebuch</h1>
+<p>Deine persönliche Eintragsbibliothek</p>
+
+{% if fehler %}
+    <p style="color:red;">{{ fehler }}</p>
+{% endif %}
+
+<form method="POST">
+    <label>Benutzername</label><br>
+    <input type="text" name="username" placeholder="dein Benutzername" required><br><br>
+
+    <label>Passwort</label><br>
+    <input type="password" name="password" placeholder="••••••••" required><br><br>
+
+    <button type="submit">Anmelden</button>
+</form>
+
+<br>
+
+<p>
+    Noch kein Konto?
+    <a href="{{ url_for('register') }}">Jetzt registrieren</a>
+</p>
+
+{% endblock %}

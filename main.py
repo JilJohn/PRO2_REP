@@ -43,7 +43,6 @@ def register():
 # LOGIN
 # ══════════════════════════════════════════════════════
 @app.route("/login", methods=["GET", "POST"])
-@app.route("/", methods=["GET", "POST"])
 def login():
     fehler = ""
     if request.method == "POST":

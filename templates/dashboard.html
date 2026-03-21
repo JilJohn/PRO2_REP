@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard – Tagebuch{% endblock %}
+
+{% block content %}
+<h1>Dashboard</h1>
+<p>Statistiken für {{ user }}</p>
+
+<a href="{{ url_for('new') }}">+ Neuer Eintrag</a>
+
+<hr>
+
+<h2>Übersicht</h2>
+<p><strong>{{ total }}</strong> Einträge gesamt</p>
+<p><strong>{{ pro_monat | length }}</strong> aktive Monate</p>
+
+<p>
+Ø Einträge / Monat:
+{% if pro_monat %}
+    {{ (total / (pro_monat | length)) | round(1) }}
+{% else %}
+    0
+{% endif %}
+</p>
+
+<hr>
+
+<h2>Einträge pro Monat</h2>
+
+{% if pro_monat %}
+    {% set months = ["","Jan","Feb","Mär","Apr","Mai","Jun","Jul","Aug","Sep","Okt","Nov","Dez"] %}
+
+    <table border="1" cellpadding="5">
+        <tr>
+            <th>Monat</th>
+            <th>Einträge</th>
+            <th>Anteil</th>
+        </tr>
+
+        {% for monat, anzahl in pro_monat.items() | sort(reverse=True) %}
+        <tr>
+            <td>{{ months[monat[5:7] | int] }} {{ monat[0:4] }}</td>
+            <td>{{ anzahl }}</td>
+            <td>
+                {% if total > 0 %}
+                    {{ (anzahl / total * 100) | round(0) | int }}%
+                {% else %}
+                    0%
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+{% else %}
+    <p>Noch keine Einträge vorhanden — schreibe deinen ersten Eintrag!</p>
+{% endif %}
+
+<br>
+
+<a href="{{ url_for('overview') }}">Alle Einträge anzeigen</a><br>
+<a href="{{ url_for('new') }}">Neuen Eintrag schreiben</a>
+
+{% endblock %}

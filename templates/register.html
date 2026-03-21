@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Registrieren – Tagebuch{% endblock %}
+
+{% block content %}
+
+<h1>✦ Tagebuch</h1>
+<p>Konto erstellen</p>
+
+{% if fehler %}
+    <p style="color:red;">{{ fehler }}</p>
+{% endif %}
+
+<form method="POST">
+    <label>Benutzername</label><br>
+    <input type="text" name="username" placeholder="Wähle einen Benutzernamen" required><br><br>
+
+    <label>Passwort</label><br>
+    <input type="password" name="password" placeholder="Wähle ein Passwort" required><br><br>
+
+    <button type="submit">Konto erstellen</button>
+</form>
+
+<br>
+
+<p>
+    Bereits registriert?
+    <a href="{{ url_for('login') }}">Jetzt anmelden</a>
+</p>
+
+{% endblock %}

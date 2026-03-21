@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}{{ entry.title }} – Tagebuch{% endblock %}
+
+{% block content %}
+
+<a href="{{ url_for('overview') }}">← Alle Einträge</a>
+
+{% set months = ["","Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember"] %}
+
+<p>
+    {{ entry.date[8:10] }}.
+    {{ months[entry.date[5:7] | int] }}
+    {{ entry.date[0:4] }}
+</p>
+
+<p><small>Eintrag #{{ entry.id }}</small></p>
+
+<h1>{{ entry.title }}</h1>
+
+<p>{{ entry.content }}</p>
+
+<hr>
+
+<a href="{{ url_for('overview') }}">← Zurück</a> |
+<a href="{{ url_for('edit', id=entry.id) }}">Bearbeiten</a> |
+
+<form method="POST" action="{{ url_for('delete', id=entry.id) }}" style="display:inline;">
+    <button type="submit" style="color:red;">Löschen</button>
+</form>
+
+{% endblock %}

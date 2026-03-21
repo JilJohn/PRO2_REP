@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}Übersicht – Tagebuch{% endblock %}
+
+{% block content %}
+
+<h1>Deine Einträge</h1>
+<p>
+    Willkommen zurück, {{ user }} — 
+    {% if entries %}
+        {{ entries | length }} Eintrag{% if entries | length != 1 %}e{% endif %} gespeichert
+    {% else %}
+        noch keine Einträge
+    {% endif %}
+</p>
+
+<a href="{{ url_for('new') }}">+ Neuer Eintrag</a>
+
+<hr>
+
+{% if entries %}
+    {% set months = ["","Jan","Feb","Mär","Apr","Mai","Jun","Jul","Aug","Sep","Okt","Nov","Dez"] %}
+
+    {% for entry in entries %}
+    <div style="border:1px solid #ccc; padding:10px; margin-bottom:10px;">
+        <p><strong>{{ entry.date[8:10] }} {{ months[entry.date[5:7] | int] }} {{ entry.date[0:4] }}</strong></p>
+        <h2>{{ entry.title }}</h2>
+        <p>{{ entry.content[:100] }}{% if entry.content|length > 100 %}…{% endif %}</p>
+
+        <a href="{{ url_for('entry_detail', id=entry.id) }}">Lesen</a> |
+        <a href="{{ url_for('edit', id=entry.id) }}">Bearbeiten</a> |
+
+        <form method="POST" action="{{ url_for('delete', id=entry.id) }}" style="display:inline;">
+            <button type="submit" style="color:red;">Löschen</button>
+        </form>
+    </div>
+    {% endfor %}
+
+{% else %}
+    <p>📖 Noch keine Einträge</p>
+    <p>Beginne noch heute, deine Gedanken festzuhalten.</p>
+    <a href="{{ url_for('new') }}">Ersten Eintrag schreiben</a>
+{% endif %}
+
+{% endblock %}
