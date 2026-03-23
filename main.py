@@ -45,13 +45,14 @@ def register():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     fehler = ""
+
     if request.method == "POST":
         username = request.form.get("username", "").strip()
         password = request.form.get("password", "").strip()
 
-        if users.get(username) == password:                 # Passwort prüfen
+        if users.get(username) == password:
             resp = make_response(redirect(url_for("overview")))
-            resp.set_cookie("user", username, max_age=3600) # Cookie setzen (1h)
+            resp.set_cookie("user", username, max_age=3600)  # 1 Stunde
             return resp
         else:
             fehler = "Falscher Benutzername oder Passwort."
