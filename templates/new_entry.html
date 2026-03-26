@@ -4,29 +4,57 @@
 
 {% block content %}
 
-<h1>Neuer Eintrag</h1>
-<p>Was bewegte dich heute?</p>
+<div class="container">
 
-<a href="{{ url_for('overview') }}">← Zurück</a>
+    <div class="card diary-card">
+        <h1>Neuer Tagebucheintrag</h1>
+        <p class="subtitle">Was bewegte dich heute?</p>
 
-{% if fehler %}
-    <p style="color:red;">{{ fehler }}</p>
-{% endif %}
+        <a class="back-link" href="{{ url_for('overview') }}">← Zur Übersicht</a>
 
-<form method="POST">
+        {% if fehler %}
+            <p class="error">{{ fehler }}</p>
+        {% endif %}
 
-    <label>Titel</label><br>
-    <input type="text" name="title" placeholder="Titel des Eintrags…" required><br><br>
+        <form method="POST" class="diary-form">
 
-    <label>Datum</label><br>
-    <input type="date" name="date" value="{{ today }}"><br><br>
+            <div class="form-group">
+                <label for="title">Titel</label>
+                <input 
+                    type="text" 
+                    id="title"
+                    name="title" 
+                    placeholder="Titel des Eintrags…" 
+                    required>
+            </div>
 
-    <label>Gedanken</label><br>
-    <textarea name="content" rows="8" placeholder="Schreibe hier deine Gedanken, Erlebnisse und Reflexionen…" required></textarea><br><br>
+            <div class="form-group">
+                <label for="date">Datum</label>
+                <input 
+                    type="date" 
+                    id="date"
+                    name="date" 
+                    value="{{ today }}">
+            </div>
 
-    <button type="submit">Eintrag speichern</button>
-    <a href="{{ url_for('overview') }}">Abbrechen</a>
+            <div class="form-group">
+                <label for="content">Gedanken</label>
+                <textarea 
+                    id="content"
+                    name="content" 
+                    rows="8" 
+                    placeholder="Schreibe hier deine Gedanken, Erlebnisse und Reflexionen…" 
+                    required></textarea>
+            </div>
 
-</form>
+            <div class="form-actions">
+                <button type="submit" class="btn-save">Eintrag speichern</button>
+                <a class="btn-cancel" href="{{ url_for('overview') }}">Abbrechen</a>
+            </div>
+
+        </form>
+    </div>
+
+</div>
 
 {% endblock %}
