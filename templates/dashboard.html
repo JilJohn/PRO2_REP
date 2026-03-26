@@ -6,7 +6,7 @@
 <h1>Dashboard</h1>
 <p>Statistiken für {{ user }}</p>
 
-<a href="{{ url_for('new') }}">+ Neuer Eintrag</a>
+<a href="{{ url_for('new_entry') }}" class="btn">Neuer Eintrag</a>
 
 <hr>
 
@@ -58,7 +58,9 @@
 
 <br>
 
-<a href="{{ url_for('overview') }}">Alle Einträge anzeigen</a><br>
-<a href="{{ url_for('new') }}">Neuen Eintrag schreiben</a>
+<div class="link-group">
+    <a href="{{ url_for('overview') }}" class="btn">Alle Einträge anzeigen</a>
+    <a href="{{ url_for('new_entry') }}" class="btn">Neuen Eintrag schreiben</a>
+</div>
 
 {% endblock %}
