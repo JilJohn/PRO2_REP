@@ -6,7 +6,7 @@ app = Flask(__name__)
 # ──────────────────────────────────────────────────────
 # DATENSPEICHER (temporär – kein Datenbank)
 # ──────────────────────────────────────────────────────
-users   = {}   # {"melissa": "pw123"}
+users   = {}   # {"jil": "123"}
 entries = []   # Liste von Dicts: {id, username, title, date, content}
 next_id = [1]  # Zähler für eindeutige IDs (Liste wegen global)
 
@@ -17,6 +17,17 @@ next_id = [1]  # Zähler für eindeutige IDs (Liste wegen global)
 def get_current_user():
     return request.cookies.get("user")
 
+# ══════════════════════════════════════════════════════
+# STARTSEITE
+# ══════════════════════════════════════════════════════
+@app.route("/")
+def start():
+    user = get_current_user()
+
+    if user:
+        return redirect(url_for("overview"))   # wenn eingeloggt → Übersicht
+    else:
+        return redirect(url_for("login"))      # sonst → Login
 
 # ══════════════════════════════════════════════════════
 # REGISTRIERUNG
@@ -213,4 +224,4 @@ def dashboard():
 # START
 # ──────────────────────────────────────────────────────
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=5001)
