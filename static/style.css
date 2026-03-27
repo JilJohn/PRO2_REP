@@ -3,15 +3,15 @@
    ══════════════════════════════════════════════════════ */
 
 :root {
-    --primary: #E63946;        /* Rosarot */
-    --primary-light: #FF6B7A;
-    --primary-dark: #A4161A;
+    --primary: #C59FA6;        /* Feines Rosarot */
+    --primary-light: #D4B0B7;
+    --primary-dark: #A67A84;
     --white: #FFFFFF;
     --gray-light: #F7F7F7;
     --gray-medium: #E0E0E0;
     --gray-dark: #333333;
     --text: #1A1A1A;
-    --accent: #457B9D;         /* Blauton */
+    --accent: #8B9BA8;         /* Sanfter Blauton */
     --spacing-xs: 0.5rem;
     --spacing-sm: 1rem;
     --spacing-md: 1.5rem;
