@@ -14,7 +14,7 @@
     {% endif %}
 </p>
 
-<a href="{{ url_for('new') }}">+ Neuer Eintrag</a>
+<a href="{{ url_for('new_entry') }}">+ Neuer Eintrag</a>
 
 <hr>
 
@@ -27,19 +27,19 @@
         <h2>{{ entry.title }}</h2>
         <p>{{ entry.content[:100] }}{% if entry.content|length > 100 %}…{% endif %}</p>
 
-        <a href="{{ url_for('entry_detail', id=entry.id) }}">Lesen</a> |
-        <a href="{{ url_for('edit', id=entry.id) }}">Bearbeiten</a> |
+        <a href="{{ url_for('entry_detail', entry_id=entry.id) }}">Lesen</a> |
+        <a href="{{ url_for('edit_entry', entry_id=entry.id) }}">Bearbeiten</a> |
 
-        <form method="POST" action="{{ url_for('delete', id=entry.id) }}" style="display:inline;">
+        <form method="POST" action="{{ url_for('delete_entry', entry_id=entry.id) }}" style="display:inline;">
             <button type="submit" style="color:red;">Löschen</button>
         </form>
     </div>
     {% endfor %}
 
 {% else %}
-    <p>📖 Noch keine Einträge</p>
+    <p>Noch keine Einträge</p>
     <p>Beginne noch heute, deine Gedanken festzuhalten.</p>
-    <a href="{{ url_for('new') }}">Ersten Eintrag schreiben</a>
+    <a href="{{ url_for('new_entry') }}">Ersten Eintrag schreiben</a>
 {% endif %}
 
 {% endblock %}
