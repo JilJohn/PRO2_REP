@@ -41,8 +41,8 @@
     padding-top: 2px;
   }
   .entry-day {
-    font-family: 'Playfair Display', serif;
-    font-size: 2rem;
+    font-family: inherit;
+    font-size: 1.8rem;
     font-weight: 700;
     color: var(--accent2);
     line-height: 1;
@@ -57,9 +57,9 @@
 
   .entry-body { flex: 1; }
   .entry-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.15rem;
-    font-weight: 400;
+    font-family: inherit;
+    font-size: 1.1rem;
+    font-weight: 600;
     color: var(--ink);
     margin-bottom: 6px;
   }
@@ -88,14 +88,9 @@
     padding: 80px 40px;
     color: var(--muted);
   }
-  .empty-state .empty-icon {
-    font-size: 3rem;
-    margin-bottom: 16px;
-    opacity: 0.4;
-  }
   .empty-state h2 {
-    font-family: 'Playfair Display', serif;
-    font-weight: 400;
+    font-family: inherit;
+    font-weight: 600;
     font-size: 1.4rem;
     margin-bottom: 8px;
     color: var(--ink);
@@ -154,7 +149,6 @@
 
 {% else %}
   <div class="empty-state">
-    <div class="empty-icon">📖</div>
     <h2>Noch keine Einträge</h2>
     <p style="margin-bottom: 24px;">Beginne noch heute, deine Gedanken festzuhalten.</p>
     <a href="{{ url_for('new_entry') }}" class="btn btn-primary">Ersten Eintrag schreiben</a>
