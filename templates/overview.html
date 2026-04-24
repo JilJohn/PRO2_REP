@@ -2,44 +2,163 @@
 
 {% block title %}Übersicht – Tagebuch{% endblock %}
 
+{% block extra_css %}
+<style>
+  .entry-card {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 22px 28px;
+    margin-bottom: 12px;
+    box-shadow: 0 1px 4px var(--shadow);
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    text-decoration: none;
+    color: inherit;
+    transition: box-shadow 0.2s, transform 0.15s;
+    position: relative;
+    overflow: hidden;
+  }
+  .entry-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--accent2);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .entry-card:hover {
+    box-shadow: 0 4px 16px var(--shadow);
+    transform: translateY(-1px);
+  }
+  .entry-card:hover::before { opacity: 1; }
+
+  .entry-date-col {
+    min-width: 80px;
+    text-align: center;
+    padding-top: 2px;
+  }
+  .entry-day {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent2);
+    line-height: 1;
+  }
+  .entry-month {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .entry-body { flex: 1; }
+  .entry-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    font-weight: 400;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+  .entry-preview {
+    color: var(--muted);
+    font-size: 0.88rem;
+    font-weight: 300;
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .entry-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .entry-card:hover .entry-actions { opacity: 1; }
+
+  .empty-state {
+    text-align: center;
+    padding: 80px 40px;
+    color: var(--muted);
+  }
+  .empty-state .empty-icon {
+    font-size: 3rem;
+    margin-bottom: 16px;
+    opacity: 0.4;
+  }
+  .empty-state h2 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 400;
+    font-size: 1.4rem;
+    margin-bottom: 8px;
+    color: var(--ink);
+  }
+</style>
+{% endblock %}
+
 {% block content %}
-
-<h1>Deine Einträge</h1>
-<p>
-    Willkommen zurück, {{ user }} — 
-    {% if entries %}
-        {{ entries | length }} Eintrag{% if entries | length != 1 %}e{% endif %} gespeichert
-    {% else %}
+<div class="page-header flex-between">
+  <div>
+    <h1>Deine Einträge</h1>
+    <p>Willkommen zurück, {{ user }} —
+      {% if entries %}
+        {{ entries | length }} Eintrag{% if entries | length != 1 %}einträge{% endif %} gespeichert
+      {% else %}
         noch keine Einträge
-    {% endif %}
-</p>
-
-<a href="{{ url_for('new_entry') }}">+ Neuer Eintrag</a>
-
-<hr>
+      {% endif %}
+    </p>
+  </div>
+  <a href="{{ url_for('new_entry') }}" class="btn btn-primary">+ Neuer Eintrag</a>
+</div>
 
 {% if entries %}
-    {% set months = ["","Jan","Feb","Mär","Apr","Mai","Jun","Jul","Aug","Sep","Okt","Nov","Dez"] %}
+  {% for entry in entries %}
+    <div class="entry-card fade-in" style="animation-delay: {{ loop.index0 * 0.05 }}s;">
 
-    {% for entry in entries %}
-    <div style="border:1px solid #ccc; padding:10px; margin-bottom:10px;">
-        <p><strong>{{ entry.date[8:10] }} {{ months[entry.date[5:7] | int] }} {{ entry.date[0:4] }}</strong></p>
-        <h2>{{ entry.title }}</h2>
-        <p>{{ entry.content[:100] }}{% if entry.content|length > 100 %}…{% endif %}</p>
+      <!-- Datum-Spalte -->
+      <div class="entry-date-col">
+        <div class="entry-day">{{ entry.date[8:10] }}</div>
+        <div class="entry-month">
+          {% set months = ["","Jan","Feb","Mär","Apr","Mai","Jun","Jul","Aug","Sep","Okt","Nov","Dez"] %}
+          {{ months[entry.date[5:7] | int] }} {{ entry.date[0:4] }}
+        </div>
+      </div>
 
-        <a href="{{ url_for('entry_detail', entry_id=entry.id) }}">Lesen</a> |
-        <a href="{{ url_for('edit_entry', entry_id=entry.id) }}">Bearbeiten</a> |
+      <!-- Inhalt -->
+      <div class="entry-body">
+        <div class="entry-title">{{ entry.title }}</div>
+        <div class="entry-preview">{{ entry.content }}</div>
+      </div>
 
-        <form method="POST" action="{{ url_for('delete_entry', entry_id=entry.id) }}" style="display:inline;">
-            <button type="submit" style="color:red;">Löschen</button>
+      <!-- Aktionen -->
+      <div class="entry-actions">
+        <a href="{{ url_for('entry_detail', entry_id=entry.id) }}"
+           class="btn btn-secondary btn-sm">Lesen</a>
+        <a href="{{ url_for('edit_entry', entry_id=entry.id) }}"
+           class="btn btn-secondary btn-sm">Bearbeiten</a>
+        <form method="post" action="{{ url_for('delete_entry', entry_id=entry.id) }}"
+              onsubmit="return confirm('Eintrag wirklich löschen?');" style="margin:0;">
+          <button type="submit" class="btn btn-danger btn-sm">Löschen</button>
         </form>
+      </div>
+
     </div>
-    {% endfor %}
+  {% endfor %}
 
 {% else %}
-    <p>Noch keine Einträge</p>
-    <p>Beginne noch heute, deine Gedanken festzuhalten.</p>
-    <a href="{{ url_for('new_entry') }}">Ersten Eintrag schreiben</a>
+  <div class="empty-state">
+    <div class="empty-icon">📖</div>
+    <h2>Noch keine Einträge</h2>
+    <p style="margin-bottom: 24px;">Beginne noch heute, deine Gedanken festzuhalten.</p>
+    <a href="{{ url_for('new_entry') }}" class="btn btn-primary">Ersten Eintrag schreiben</a>
+  </div>
 {% endif %}
 
 {% endblock %}
