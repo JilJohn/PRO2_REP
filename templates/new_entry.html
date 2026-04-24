@@ -2,59 +2,120 @@
 
 {% block title %}Neuer Eintrag – Tagebuch{% endblock %}
 
+{% block extra_css %}
+<style>
+  .writing-area {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 36px 40px;
+    box-shadow: 0 2px 12px var(--shadow);
+    /* Liniertes Papier-Effekt */
+    background-image: repeating-linear-gradient(
+      transparent,
+      transparent 31px,
+      var(--border) 31px,
+      var(--border) 32px
+    );
+    background-attachment: local;
+  }
+  .writing-area textarea {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    line-height: 32px;
+    padding: 0;
+    font-size: 1rem;
+    font-weight: 300;
+  }
+  .writing-area textarea:focus {
+    border: none;
+    box-shadow: none;
+  }
+  .writing-area input[type="text"] {
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid var(--border);
+    border-radius: 0;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    padding: 6px 0;
+    margin-bottom: 8px;
+  }
+  .writing-area input[type="text"]:focus {
+    border-color: var(--accent2);
+    box-shadow: none;
+  }
+  .writing-area input[type="date"] {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--border);
+    border-radius: 0;
+    font-size: 0.85rem;
+    color: var(--muted);
+    padding: 4px 0;
+    margin-bottom: 24px;
+  }
+  .writing-area input[type="date"]:focus {
+    border-color: var(--accent2);
+    box-shadow: none;
+  }
+  .char-count {
+    text-align: right;
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-top: 8px;
+  }
+</style>
+{% endblock %}
+
 {% block content %}
-
-<div class="container">
-
-    <div class="card diary-card">
-        <h1>Neuer Tagebucheintrag</h1>
-        <p class="subtitle">Was bewegte dich heute?</p>
-
-        <a class="back-link" href="{{ url_for('overview') }}">← Zur Übersicht</a>
-
-        {% if fehler %}
-            <p class="error">{{ fehler }}</p>
-        {% endif %}
-
-        <form method="POST" class="diary-form">
-
-            <div class="form-group">
-                <label for="title">Titel</label>
-                <input 
-                    type="text" 
-                    id="title"
-                    name="title" 
-                    placeholder="Titel des Eintrags…" 
-                    required>
-            </div>
-
-            <div class="form-group">
-                <label for="date">Datum</label>
-                <input 
-                    type="date" 
-                    id="date"
-                    name="date" 
-                    value="{{ today }}">
-            </div>
-
-            <div class="form-group">
-                <label for="content">Gedanken</label>
-                <textarea 
-                    id="content"
-                    name="content" 
-                    rows="8" 
-                    placeholder="Schreibe hier deine Gedanken, Erlebnisse und Reflexionen…" 
-                    required></textarea>
-            </div>
-
-            <div class="form-actions">
-                <button type="submit" class="btn-save">Eintrag speichern</button>
-                <a class="btn-cancel" href="{{ url_for('overview') }}">Abbrechen</a>
-            </div>
-
-        </form>
-    </div>
-
+<div class="page-header flex-between">
+  <div>
+    <h1>Neuer Eintrag</h1>
+    <p>Was bewegte dich heute?</p>
+  </div>
+  <a href="{{ url_for('overview') }}" class="btn btn-secondary">← Zurück</a>
 </div>
 
+{% if fehler %}
+  <div class="alert alert-error">{{ fehler }}</div>
+{% endif %}
+
+<form method="post" action="{{ url_for('new_entry') }}">
+  <div class="writing-area fade-in">
+
+    <div class="form-group" style="margin-bottom:4px;">
+      <label>Titel</label>
+      <input type="text" name="title" placeholder="Titel des Eintrags…" autofocus>
+    </div>
+
+    <div class="form-group">
+      <label>Datum</label>
+      <input type="date" name="date" value="{{ today }}">
+    </div>
+
+    <div class="form-group">
+      <label>Gedanken</label>
+      <textarea name="content" id="content" rows="12"
+                placeholder="Schreibe hier deine Gedanken, Erlebnisse und Reflexionen…"
+                oninput="updateCount(this)"></textarea>
+      <div class="char-count">
+        <span id="char-count">0</span> Zeichen
+      </div>
+    </div>
+
+  </div>
+
+  <div class="flex" style="margin-top: 20px; justify-content: flex-end; gap: 12px;">
+    <a href="{{ url_for('overview') }}" class="btn btn-secondary">Abbrechen</a>
+    <button type="submit" class="btn btn-primary">Eintrag speichern</button>
+  </div>
+</form>
+
+<script>
+function updateCount(el) {
+  document.getElementById('char-count').textContent = el.value.length;
+}
+</script>
 {% endblock %}
