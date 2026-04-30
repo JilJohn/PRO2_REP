@@ -6,7 +6,9 @@ app = Flask(__name__)
 # ──────────────────────────────────────────────────────
 # DATENSPEICHER (temporär – kein Datenbank)
 # ──────────────────────────────────────────────────────
-
+users   = {}   # {"jil": "123"}
+entries = []   # Liste von Dicts: {id, username, title, date, content}
+next_id = [1]  # Zähler für eindeutige IDs (Liste wegen global)
 
 
 # ──────────────────────────────────────────────────────
