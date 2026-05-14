@@ -1,7 +1,8 @@
-from flask import Flask, render_template, request, redirect, url_for, make_response
+from flask import Flask, render_template, request, redirect, url_for, session
 from datetime import datetime
 
 app = Flask(__name__)
+app.secret_key = "dein-geheimer-schluessel-2026"  # Für sichere Sessions
 
 # ──────────────────────────────────────────────────────
 # DATENSPEICHER (temporär – kein Datenbank)
@@ -12,10 +13,10 @@ next_id = [1]  # Zähler für eindeutige IDs (Liste wegen global)
 
 
 # ──────────────────────────────────────────────────────
-# HILFSFUNKTION – eingeloggten User aus Cookie lesen
+# HILFSFUNKTION – eingeloggten User aus Session lesen
 # ──────────────────────────────────────────────────────
 def get_current_user():
-    return request.cookies.get("user")
+    return session.get("user")
 
 # ══════════════════════════════════════════════════════
 # STARTSEITE
@@ -62,9 +63,8 @@ def login():
         password = request.form.get("password", "").strip()
 
         if users.get(username) == password:
-            resp = make_response(redirect(url_for("overview")))
-            resp.set_cookie("user", username, max_age=3600)  # 1 Stunde
-            return resp
+            session["user"] = username  # User in Session speichern
+            return redirect(url_for("overview"))
         else:
             fehler = "Falscher Benutzername oder Passwort."
 
@@ -76,9 +76,8 @@ def login():
 # ══════════════════════════════════════════════════════
 @app.route("/logout")
 def logout():
-    resp = make_response(redirect(url_for("login")))
-    resp.set_cookie("user", "", expires=0)                  # Cookie löschen
-    return resp
+    session.clear()  # Session löschen
+    return redirect(url_for("login"))
 
 
 # ══════════════════════════════════════════════════════
