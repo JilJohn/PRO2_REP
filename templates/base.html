@@ -9,7 +9,7 @@
 </head>
 <body>
     <main>
-        {% if request.cookies.get('user') %}
+        {% if session.get('user') %}
         <nav>
             <a href="{{ url_for('overview') }}">Tagebuch</a>
             <a href="{{ url_for('overview') }}">Übersicht</a>
