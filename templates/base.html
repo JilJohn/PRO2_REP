@@ -11,7 +11,6 @@
     <main>
         {% if session.get('user') %}
         <nav>
-            <a href="{{ url_for('overview') }}">Tagebuch</a>
             <a href="{{ url_for('overview') }}">Übersicht</a>
             <a href="{{ url_for('new_entry') }}">+ Eintrag</a>
             <a href="{{ url_for('dashboard') }}">Dashboard</a>
