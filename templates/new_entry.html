@@ -2,66 +2,6 @@
 
 {% block title %}Neuer Eintrag – Tagebuch{% endblock %}
 
-{% block extra_css %}
-<style>
-  .writing-area {
-    background: var(--paper);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 36px 40px;
-    box-shadow: 0 2px 12px var(--shadow);
-    background-image: repeating-linear-gradient(
-      transparent, transparent 31px,
-      var(--border) 31px, var(--border) 32px
-    );
-    background-attachment: local;
-  }
-  .writing-area textarea {
-    background: transparent;
-    border: none;
-    box-shadow: none;
-    line-height: 32px;
-    padding: 0;
-    font-size: 1rem;
-    font-weight: 400;
-    font-family: inherit;
-  }
-  .writing-area textarea:focus {
-    border: none;
-    box-shadow: none;
-  }
-  .writing-area input[type="text"] {
-    background: transparent;
-    border: none;
-    border-bottom: 2px solid var(--border);
-    border-radius: 0;
-    font-family: inherit;
-    font-size: 1.5rem;
-    font-weight: 600;
-    padding: 6px 0;
-    margin-bottom: 8px;
-  }
-  .writing-area input[type="text"]:focus {
-    border-color: var(--accent2);
-    box-shadow: none;
-  }
-  .writing-area input[type="date"] {
-    background: transparent;
-    border: none;
-    border-bottom: 1px solid var(--border);
-    border-radius: 0;
-    font-size: 0.85rem;
-    color: var(--muted);
-    padding: 4px 0;
-    margin-bottom: 24px;
-  }
-  .writing-area input[type="date"]:focus {
-    border-color: var(--accent2);
-    box-shadow: none;
-  }
-</style>
-{% endblock %}
-
 {% block content %}
 <div class="page-header flex-between">
   <h1>Neuer Eintrag</h1>
@@ -72,20 +12,20 @@
   <div class="alert alert-error">{{ fehler }}</div>
 {% endif %}
 
-<form method="post" class="writing-area fade-in">
-  <div class="form-group" style="margin-bottom: 4px;">
+<form method="post" style="background: var(--paper); border: 1px solid var(--border); border-radius: 4px; padding: 24px; box-shadow: 0 2px 12px var(--shadow);">
+  <div class="form-group">
     <label>Titel</label>
-    <input type="text" name="title" required autofocus>
+    <input type="text" name="title" style="background: transparent; border: none; border-bottom: 2px solid var(--border); border-radius: 0; font-family: inherit; font-size: 1.3rem; font-weight: 600; padding: 4px 0; margin-bottom: 16px; width: 100%; box-sizing: border-box;" required autofocus>
   </div>
 
   <div class="form-group">
     <label>Datum</label>
-    <input type="date" name="date" value="{{ today }}" required>
+    <input type="date" name="date" value="{{ today }}" style="background: transparent; border: none; border-bottom: 1px solid var(--border); border-radius: 0; font-size: 0.9rem; color: var(--muted); padding: 4px 0; margin-bottom: 16px; width: 100%; box-sizing: border-box;" required>
   </div>
 
   <div class="form-group">
-    <label>Gedanken</label>
-    <textarea name="content" rows="12" required></textarea>
+    <label>Inhalt</label>
+    <textarea name="content" rows="10" style="background: transparent; border: none; box-shadow: none; font-family: inherit; padding: 0; width: 100%; box-sizing: border-box;" required></textarea>
   </div>
 
   <div style="margin-top: 20px; display: flex; gap: 12px; justify-content: flex-end;">

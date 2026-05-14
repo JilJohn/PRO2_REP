@@ -2,84 +2,33 @@
 
 {% block title %}Dashboard – Tagebuch{% endblock %}
 
-{% block extra_css %}
-<style>
-  .stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 16px;
-    margin: 24px 0;
-  }
-  .stat-card {
-    background: var(--paper);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 20px;
-    text-align: center;
-    box-shadow: 0 1px 4px var(--shadow);
-  }
-  .stat-number {
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: var(--accent2);
-    margin: 8px 0;
-  }
-  .stat-label {
-    font-size: 0.85rem;
-    color: var(--muted);
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-  .months-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin: 16px 0;
-  }
-  .month-item {
-    background: var(--paper);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 8px 12px;
-    font-size: 0.85rem;
-  }
-  .month-item strong {
-    color: var(--accent2);
-  }
-</style>
-{% endblock %}
-
 {% block content %}
 <div class="page-header flex-between">
-  <div>
-    <h1>Dashboard</h1>
-    <p>Deine Statistiken</p>
-  </div>
+  <h1>Dashboard</h1>
   <a href="{{ url_for('new_entry') }}" class="btn btn-primary">+ Neuer Eintrag</a>
 </div>
 
 {% if total > 0 %}
-  <div class="stats-grid">
-    <div class="stat-card fade-in">
-      <div class="stat-label">Einträge</div>
-      <div class="stat-number">{{ total }}</div>
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin: 24px 0;">
+    <div style="background: var(--paper); border: 1px solid var(--border); border-radius: 4px; padding: 20px; text-align: center; box-shadow: 0 1px 4px var(--shadow);">
+      <div style="font-size: 0.85rem; color: var(--muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px;">Einträge</div>
+      <div style="font-size: 2.5rem; font-weight: 700; color: var(--accent2); margin: 8px 0;">{{ total }}</div>
     </div>
-    <div class="stat-card fade-in" style="animation-delay: 0.05s;">
-      <div class="stat-label">Monate</div>
-      <div class="stat-number">{{ pro_monat | length }}</div>
+    <div style="background: var(--paper); border: 1px solid var(--border); border-radius: 4px; padding: 20px; text-align: center; box-shadow: 0 1px 4px var(--shadow);">
+      <div style="font-size: 0.85rem; color: var(--muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px;">Monate</div>
+      <div style="font-size: 2.5rem; font-weight: 700; color: var(--accent2); margin: 8px 0;">{{ pro_monat | length }}</div>
     </div>
-    <div class="stat-card fade-in" style="animation-delay: 0.1s;">
-      <div class="stat-label">Ø / Monat</div>
-      <div class="stat-number">{{ (total / (pro_monat | length)) | round(1) }}</div>
+    <div style="background: var(--paper); border: 1px solid var(--border); border-radius: 4px; padding: 20px; text-align: center; box-shadow: 0 1px 4px var(--shadow);">
+      <div style="font-size: 0.85rem; color: var(--muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px;">Ø / Monat</div>
+      <div style="font-size: 2.5rem; font-weight: 700; color: var(--accent2); margin: 8px 0;">{{ (total / (pro_monat | length)) | round(1) }}</div>
     </div>
   </div>
 
   <h2>Nach Monat</h2>
-  <div class="months-list">
+  <div style="display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0;">
     {% set months = ["","Jan","Feb","Mär","Apr","Mai","Jun","Jul","Aug","Sep","Okt","Nov","Dez"] %}
     {% for monat in pro_monat.keys() | sort(reverse=True) %}
-      <div class="month-item">{{ months[monat[5:7] | int] }} {{ monat[0:4] }}: <strong>{{ pro_monat[monat] }}</strong></div>
+      <div style="background: var(--paper); border: 1px solid var(--border); border-radius: 4px; padding: 8px 12px; font-size: 0.85rem;">{{ months[monat[5:7] | int] }} {{ monat[0:4] }}: <strong style="color: var(--accent2);">{{ pro_monat[monat] }}</strong></div>
     {% endfor %}
   </div>
 {% else %}

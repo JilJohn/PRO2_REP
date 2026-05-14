@@ -2,46 +2,10 @@
 
 {% block title %}Anmelden – Tagebuch{% endblock %}
 
-{% block extra_css %}
-<style>
-  .auth-wrap {
-    min-height: calc(100vh - 56px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 40px 24px;
-  }
-  .auth-box {
-    background: var(--paper);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 44px 48px;
-    width: 100%;
-    max-width: 420px;
-    box-shadow: 0 4px 24px var(--shadow);
-  }
-  .auth-logo {
-    font-size: 2rem;
-    font-weight: 700;
-    text-align: center;
-    margin-bottom: 24px;
-  }
-  .auth-logo span {
-    color: var(--accent2);
-  }
-  .auth-footer {
-    text-align: center;
-    margin-top: 20px;
-    font-size: 0.85rem;
-    color: var(--muted);
-  }
-</style>
-{% endblock %}
-
 {% block content %}
-<div class="auth-wrap" style="margin: -40px -24px;">
-  <div class="auth-box fade-in">
-    <div class="auth-logo"><span>Tagebuch</span></div>
+<div style="min-height: calc(100vh - 56px); display: flex; align-items: center; justify-content: center; padding: 40px 24px; margin: -40px -24px;">
+  <div style="background: var(--paper); border: 1px solid var(--border); border-radius: 4px; padding: 44px 48px; width: 100%; max-width: 420px; box-shadow: 0 4px 24px var(--shadow);">
+    <div style="font-size: 2rem; font-weight: 700; text-align: center; margin-bottom: 24px;"><span style="color: var(--accent2);">Tagebuch</span></div>
 
     {% if fehler %}
       <div class="alert alert-error">{{ fehler }}</div>
@@ -59,7 +23,7 @@
       <button type="submit" class="btn btn-primary" style="width: 100%;">Anmelden</button>
     </form>
 
-    <div class="auth-footer">
+    <div style="text-align: center; margin-top: 20px; font-size: 0.85rem; color: var(--muted);">
       Noch kein Konto? <a href="{{ url_for('register') }}">Registrieren</a>
     </div>
   </div>
