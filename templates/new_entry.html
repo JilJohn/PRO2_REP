@@ -10,12 +10,9 @@
     border-radius: 4px;
     padding: 36px 40px;
     box-shadow: 0 2px 12px var(--shadow);
-    /* Liniertes Papier-Effekt */
     background-image: repeating-linear-gradient(
-      transparent,
-      transparent 31px,
-      var(--border) 31px,
-      var(--border) 32px
+      transparent, transparent 31px,
+      var(--border) 31px, var(--border) 32px
     );
     background-attachment: local;
   }
@@ -62,21 +59,12 @@
     border-color: var(--accent2);
     box-shadow: none;
   }
-  .char-count {
-    text-align: right;
-    font-size: 0.75rem;
-    color: var(--muted);
-    margin-top: 8px;
-  }
 </style>
 {% endblock %}
 
 {% block content %}
 <div class="page-header flex-between">
-  <div>
-    <h1>Neuer Eintrag</h1>
-    <p>Was bewegte dich heute?</p>
-  </div>
+  <h1>Neuer Eintrag</h1>
   <a href="{{ url_for('overview') }}" class="btn btn-secondary">← Zurück</a>
 </div>
 
@@ -84,40 +72,26 @@
   <div class="alert alert-error">{{ fehler }}</div>
 {% endif %}
 
-<form method="post" action="{{ url_for('new_entry') }}">
-  <div class="writing-area fade-in">
-
-    <div class="form-group" style="margin-bottom:4px;">
-      <label>Titel</label>
-      <input type="text" name="title" placeholder="Titel des Eintrags…" autofocus>
-    </div>
-
-    <div class="form-group">
-      <label>Datum</label>
-      <input type="date" name="date" value="{{ today }}">
-    </div>
-
-    <div class="form-group">
-      <label>Gedanken</label>
-      <textarea name="content" id="content" rows="12"
-                placeholder="Schreibe hier deine Gedanken, Erlebnisse und Reflexionen…"
-                oninput="updateCount(this)"></textarea>
-      <div class="char-count">
-        <span id="char-count">0</span> Zeichen
-      </div>
-    </div>
-
+<form method="post" class="writing-area fade-in">
+  <div class="form-group" style="margin-bottom: 4px;">
+    <label>Titel</label>
+    <input type="text" name="title" required autofocus>
   </div>
 
-  <div class="flex" style="margin-top: 20px; justify-content: flex-end; gap: 12px;">
+  <div class="form-group">
+    <label>Datum</label>
+    <input type="date" name="date" value="{{ today }}" required>
+  </div>
+
+  <div class="form-group">
+    <label>Gedanken</label>
+    <textarea name="content" rows="12" required></textarea>
+  </div>
+
+  <div style="margin-top: 20px; display: flex; gap: 12px; justify-content: flex-end;">
     <a href="{{ url_for('overview') }}" class="btn btn-secondary">Abbrechen</a>
-    <button type="submit" class="btn btn-primary">Eintrag speichern</button>
+    <button type="submit" class="btn btn-primary">Speichern</button>
   </div>
 </form>
 
-<script>
-function updateCount(el) {
-  document.getElementById('char-count').textContent = el.value.length;
-}
-</script>
 {% endblock %}
