@@ -10,7 +10,6 @@
     gap: 16px;
     margin: 24px 0;
   }
-  
   .stat-card {
     background: var(--paper);
     border: 1px solid var(--border);
@@ -19,14 +18,12 @@
     text-align: center;
     box-shadow: 0 1px 4px var(--shadow);
   }
-  
   .stat-number {
     font-size: 2.5rem;
     font-weight: 700;
     color: var(--accent2);
     margin: 8px 0;
   }
-  
   .stat-label {
     font-size: 0.85rem;
     color: var(--muted);
@@ -34,32 +31,21 @@
     text-transform: uppercase;
     letter-spacing: 0.5px;
   }
-  
   .months-list {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-    margin-top: 16px;
+    margin: 16px 0;
   }
-  
   .month-item {
     background: var(--paper);
     border: 1px solid var(--border);
     border-radius: 4px;
     padding: 8px 12px;
     font-size: 0.85rem;
-    color: var(--ink);
   }
-  
   .month-item strong {
     color: var(--accent2);
-    font-weight: 700;
-  }
-  
-  .empty-message {
-    text-align: center;
-    padding: 40px 20px;
-    color: var(--muted);
   }
 </style>
 {% endblock %}
@@ -74,46 +60,37 @@
 </div>
 
 {% if total > 0 %}
-  <!-- Statistik-Karten -->
   <div class="stats-grid">
     <div class="stat-card fade-in">
-      <div class="stat-label">Einträge gesamt</div>
+      <div class="stat-label">Einträge</div>
       <div class="stat-number">{{ total }}</div>
     </div>
-    
     <div class="stat-card fade-in" style="animation-delay: 0.05s;">
-      <div class="stat-label">Aktive Monate</div>
+      <div class="stat-label">Monate</div>
       <div class="stat-number">{{ pro_monat | length }}</div>
     </div>
-    
     <div class="stat-card fade-in" style="animation-delay: 0.1s;">
-      <div class="stat-label">Ø pro Monat</div>
+      <div class="stat-label">Ø / Monat</div>
       <div class="stat-number">{{ (total / (pro_monat | length)) | round(1) }}</div>
     </div>
   </div>
 
-  <!-- Einträge pro Monat -->
-  <h2 style="margin-top: 32px;">Einträge nach Monat</h2>
-  {% set months = ["","Jan","Feb","Mär","Apr","Mai","Jun","Jul","Aug","Sep","Okt","Nov","Dez"] %}
-  
+  <h2>Nach Monat</h2>
   <div class="months-list">
+    {% set months = ["","Jan","Feb","Mär","Apr","Mai","Jun","Jul","Aug","Sep","Okt","Nov","Dez"] %}
     {% for monat in pro_monat.keys() | sort(reverse=True) %}
-      <div class="month-item">
-        {{ months[monat[5:7] | int] }} {{ monat[0:4] }}: <strong>{{ pro_monat[monat] }}</strong>
-      </div>
+      <div class="month-item">{{ months[monat[5:7] | int] }} {{ monat[0:4] }}: <strong>{{ pro_monat[monat] }}</strong></div>
     {% endfor %}
   </div>
-
 {% else %}
-  <div class="empty-message">
-    <p style="font-size: 1.1rem; margin-bottom: 16px;">Noch keine Einträge vorhanden</p>
-    <p style="color: var(--muted); margin-bottom: 24px;">Beginne noch heute, deine Gedanken festzuhalten.</p>
-    <a href="{{ url_for('new_entry') }}" class="btn btn-primary">Ersten Eintrag schreiben</a>
+  <div style="text-align: center; padding: 40px 20px;">
+    <p style="font-size: 1.1rem; margin-bottom: 16px;">Noch keine Einträge</p>
+    <p style="color: var(--muted); margin-bottom: 24px;">Schreibe deinen ersten Eintrag.</p>
+    <a href="{{ url_for('new_entry') }}" class="btn btn-primary">Eintrag schreiben</a>
   </div>
 {% endif %}
 
-<div style="margin-top: 32px; display: flex; gap: 12px;">
-  <a href="{{ url_for('overview') }}" class="btn btn-secondary">← Alle Einträge</a>
+<div style="margin-top: 32px;">
+  <a href="{{ url_for('overview') }}" class="btn btn-secondary">← Übersicht</a>
 </div>
-
 {% endblock %}
