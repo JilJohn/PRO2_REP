@@ -2,65 +2,118 @@
 
 {% block title %}Dashboard – Tagebuch{% endblock %}
 
+{% block extra_css %}
+<style>
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin: 24px 0;
+  }
+  
+  .stat-card {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 1px 4px var(--shadow);
+  }
+  
+  .stat-number {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--accent2);
+    margin: 8px 0;
+  }
+  
+  .stat-label {
+    font-size: 0.85rem;
+    color: var(--muted);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  .months-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 16px;
+  }
+  
+  .month-item {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-size: 0.85rem;
+    color: var(--ink);
+  }
+  
+  .month-item strong {
+    color: var(--accent2);
+    font-weight: 700;
+  }
+  
+  .empty-message {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--muted);
+  }
+</style>
+{% endblock %}
+
 {% block content %}
-<h1>Dashboard</h1>
-<p>Statistiken für {{ user }}</p>
+<div class="page-header flex-between">
+  <div>
+    <h1>Dashboard</h1>
+    <p>Deine Statistiken</p>
+  </div>
+  <a href="{{ url_for('new_entry') }}" class="btn btn-primary">+ Neuer Eintrag</a>
+</div>
 
-<a href="{{ url_for('new_entry') }}" class="btn">Neuer Eintrag</a>
+{% if total > 0 %}
+  <!-- Statistik-Karten -->
+  <div class="stats-grid">
+    <div class="stat-card fade-in">
+      <div class="stat-label">Einträge gesamt</div>
+      <div class="stat-number">{{ total }}</div>
+    </div>
+    
+    <div class="stat-card fade-in" style="animation-delay: 0.05s;">
+      <div class="stat-label">Aktive Monate</div>
+      <div class="stat-number">{{ pro_monat | length }}</div>
+    </div>
+    
+    <div class="stat-card fade-in" style="animation-delay: 0.1s;">
+      <div class="stat-label">Ø pro Monat</div>
+      <div class="stat-number">{{ (total / (pro_monat | length)) | round(1) }}</div>
+    </div>
+  </div>
 
-<hr>
-
-<h2>Übersicht</h2>
-<p><strong>{{ total }}</strong> Einträge gesamt</p>
-<p><strong>{{ pro_monat | length }}</strong> aktive Monate</p>
-
-<p>
-Ø Einträge / Monat:
-{% if pro_monat %}
-    {{ (total / (pro_monat | length)) | round(1) }}
-{% else %}
-    0
-{% endif %}
-</p>
-
-<hr>
-
-<h2>Einträge pro Monat</h2>
-
-{% if pro_monat %}
-    {% set months = ["","Jan","Feb","Mär","Apr","Mai","Jun","Jul","Aug","Sep","Okt","Nov","Dez"] %}
-
-    <table border="1" cellpadding="5">
-        <tr>
-            <th>Monat</th>
-            <th>Einträge</th>
-            <th>Anteil</th>
-        </tr>
-
-        {% for monat, anzahl in pro_monat.items() | sort(reverse=True) %}
-        <tr>
-            <td>{{ months[monat[5:7] | int] }} {{ monat[0:4] }}</td>
-            <td>{{ anzahl }}</td>
-            <td>
-                {% if total > 0 %}
-                    {{ (anzahl / total * 100) | round(0) | int }}%
-                {% else %}
-                    0%
-                {% endif %}
-            </td>
-        </tr>
-        {% endfor %}
-    </table>
+  <!-- Einträge pro Monat -->
+  <h2 style="margin-top: 32px;">Einträge nach Monat</h2>
+  {% set months = ["","Jan","Feb","Mär","Apr","Mai","Jun","Jul","Aug","Sep","Okt","Nov","Dez"] %}
+  
+  <div class="months-list">
+    {% for monat in pro_monat.keys() | sort(reverse=True) %}
+      <div class="month-item">
+        {{ months[monat[5:7] | int] }} {{ monat[0:4] }}: <strong>{{ pro_monat[monat] }}</strong>
+      </div>
+    {% endfor %}
+  </div>
 
 {% else %}
-    <p>Noch keine Einträge vorhanden — schreibe deinen ersten Eintrag!</p>
+  <div class="empty-message">
+    <p style="font-size: 1.1rem; margin-bottom: 16px;">Noch keine Einträge vorhanden</p>
+    <p style="color: var(--muted); margin-bottom: 24px;">Beginne noch heute, deine Gedanken festzuhalten.</p>
+    <a href="{{ url_for('new_entry') }}" class="btn btn-primary">Ersten Eintrag schreiben</a>
+  </div>
 {% endif %}
 
-<br>
-
-<div class="link-group">
-    <a href="{{ url_for('overview') }}" class="btn">Alle Einträge anzeigen</a>
-    <a href="{{ url_for('new_entry') }}" class="btn">Neuen Eintrag schreiben</a>
+<div style="margin-top: 32px; display: flex; gap: 12px;">
+  <a href="{{ url_for('overview') }}" class="btn btn-secondary">← Alle Einträge</a>
 </div>
 
 {% endblock %}
