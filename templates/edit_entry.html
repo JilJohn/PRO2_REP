@@ -3,36 +3,41 @@
 {% block title %}Eintrag bearbeiten – Tagebuch{% endblock %}
 
 {% block content %}
-<h1>Eintrag bearbeiten</h1>
-<p>Eintrag #{{ entry.id }} — Änderungen werden sofort gespeichert</p>
-
-<a href="{{ url_for('overview') }}">← Zurück</a>
+<div class="page-header flex-between">
+  <h1>Eintrag bearbeiten</h1>
+  <a href="{{ url_for('overview') }}" class="btn btn-secondary">← Zurück</a>
+</div>
 
 {% if fehler %}
-    <p style="color:red;">{{ fehler }}</p>
+  <div class="alert alert-error">{{ fehler }}</div>
 {% endif %}
 
 <form method="POST">
-    <label>Titel</label><br>
-    <input type="text" name="title" value="{{ entry.title }}" required><br><br>
+  <div class="form-group">
+    <label>Titel</label>
+    <input type="text" name="title" value="{{ entry.title }}" required>
+  </div>
 
-    <label>Datum</label><br>
-    <input type="date" name="date" value="{{ entry.date }}"><br><br>
+  <div class="form-group">
+    <label>Datum</label>
+    <input type="date" name="date" value="{{ entry.date }}" required>
+  </div>
 
-    <label>Inhalt</label><br>
-    <textarea name="content" rows="6" required>{{ entry.content }}</textarea><br><br>
+  <div class="form-group">
+    <label>Inhalt</label>
+    <textarea name="content" rows="8" required>{{ entry.content }}</textarea>
+  </div>
 
-    <button type="submit">Änderungen speichern</button>
+  <div style="display: flex; gap: 12px; margin-top: 20px;">
+    <button type="submit" class="btn btn-primary">Speichern</button>
+    <a href="{{ url_for('overview') }}" class="btn btn-secondary">Abbrechen</a>
+  </div>
 </form>
 
-<br>
+<hr style="margin-top: 40px;">
 
-<form method="POST" action="{{ url_for('delete_entry', entry_id=entry.id) }}">
-    <button type="submit" style="color:red;">Eintrag löschen</button>
+<form method="POST" action="{{ url_for('delete_entry', entry_id=entry.id) }}" onsubmit="return confirm('Eintrag wirklich löschen?');">
+  <button type="submit" class="btn btn-danger">Eintrag löschen</button>
 </form>
-
-<br>
-
-<a href="{{ url_for('overview') }}">Abbrechen</a>
 
 {% endblock %}
