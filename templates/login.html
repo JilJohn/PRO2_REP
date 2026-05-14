@@ -21,20 +21,13 @@
     box-shadow: 0 4px 24px var(--shadow);
   }
   .auth-logo {
-    font-family: inherit;
     font-size: 2rem;
     font-weight: 700;
-    color: var(--ink);
     text-align: center;
-    margin-bottom: 6px;
+    margin-bottom: 24px;
   }
-  .auth-logo span { color: var(--accent2); }
-  .auth-sub {
-    text-align: center;
-    color: var(--muted);
-    font-size: 0.82rem;
-    margin-bottom: 32px;
-    font-weight: 300;
+  .auth-logo span {
+    color: var(--accent2);
   }
   .auth-footer {
     text-align: center;
@@ -42,7 +35,6 @@
     font-size: 0.85rem;
     color: var(--muted);
   }
-  .auth-footer a { color: var(--accent); text-decoration: none; font-weight: 700; }
 </style>
 {% endblock %}
 
@@ -50,31 +42,25 @@
 <div class="auth-wrap" style="margin: -40px -24px;">
   <div class="auth-box fade-in">
     <div class="auth-logo">✦ <span>Tagebuch</span></div>
-    <div class="auth-sub">Deine persönliche Eintragsbibliothek</div>
 
     {% if fehler %}
       <div class="alert alert-error">{{ fehler }}</div>
     {% endif %}
 
-    <form method="post" action="{{ url_for('login') }}">
+    <form method="post">
       <div class="form-group">
         <label for="username">Benutzername</label>
-        <input type="text" id="username" name="username"
-               placeholder="dein Benutzername" autocomplete="username">
+        <input type="text" id="username" name="username" required>
       </div>
       <div class="form-group">
         <label for="password">Passwort</label>
-        <input type="password" id="password" name="password"
-               placeholder="••••••••" autocomplete="current-password">
+        <input type="password" id="password" name="password" required>
       </div>
-      <button type="submit" class="btn btn-primary" style="width:100%; margin-top:8px;">
-        Anmelden
-      </button>
+      <button type="submit" class="btn btn-primary" style="width: 100%;">Anmelden</button>
     </form>
 
     <div class="auth-footer">
-      Noch kein Konto?
-      <a href="{{ url_for('register') }}">Jetzt registrieren</a>
+      Noch kein Konto? <a href="{{ url_for('register') }}">Registrieren</a>
     </div>
   </div>
 </div>
