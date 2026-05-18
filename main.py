@@ -2,11 +2,12 @@ from flask import Flask, render_template, request, redirect, url_for, session
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from bcrypt import hashpw, gensalt, checkpw
+import os
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///tagebuch.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.secret_key = "dein-geheimer-schluessel-2026"
+app.secret_key = os.environ.get("SECRET_KEY", "dev-key-change-in-production")
 
 db = SQLAlchemy(app)
 
@@ -14,12 +15,13 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
     password = db.Column(db.LargeBinary, nullable=False)
+    entries = db.relationship('Entry', backref='user', lazy=True, cascade='all, delete-orphan')
 
 class Entry(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     title = db.Column(db.String(200), nullable=False)
-    date = db.Column(db.String(10), nullable=False)
+    date = db.Column(db.Date, nullable=False)
     content = db.Column(db.Text, nullable=False)
 
 with app.app_context():
@@ -74,7 +76,8 @@ def overview():
     user = get_current_user()
     if not user:
         return redirect(url_for("login"))
-    my_entries = Entry.query.filter_by(username=user).order_by(Entry.date.desc()).all()
+    user_obj = User.query.filter_by(username=user).first()
+    my_entries = Entry.query.filter_by(user_id=user_obj.id).order_by(Entry.date.desc()).all()
     return render_template("overview.html", user=user, entries=my_entries)
 
 @app.route("/new", methods=["GET", "POST"])
@@ -90,7 +93,8 @@ def new_entry():
         if not title or not content:
             fehler = "Titel und Inhalt dürfen nicht leer sein."
         else:
-            entry = Entry(username=user, title=title, date=date, content=content)
+            user_obj = User.query.filter_by(username=user).first()
+            entry = Entry(user_id=user_obj.id, title=title, date=datetime.strptime(date, "%Y-%m-%d").date(), content=content)
             db.session.add(entry)
             db.session.commit()
             return redirect(url_for("overview"))
@@ -102,7 +106,8 @@ def entry_detail(entry_id):
     user = get_current_user()
     if not user:
         return redirect(url_for("login"))
-    entry = Entry.query.filter_by(id=entry_id, username=user).first()
+    user_obj = User.query.filter_by(username=user).first()
+    entry = Entry.query.filter_by(id=entry_id, user_id=user_obj.id).first()
     if not entry:
         return "Eintrag nicht gefunden.", 404
     return render_template("entry_detail.html", user=user, entry=entry)
@@ -112,19 +117,20 @@ def edit_entry(entry_id):
     user = get_current_user()
     if not user:
         return redirect(url_for("login"))
-    entry = Entry.query.filter_by(id=entry_id, username=user).first()
+    user_obj = User.query.filter_by(username=user).first()
+    entry = Entry.query.filter_by(id=entry_id, user_id=user_obj.id).first()
     if not entry:
         return "Eintrag nicht gefunden.", 404
     fehler = ""
     if request.method == "POST":
         title = request.form.get("title", "").strip()
-        date = request.form.get("date", entry.date)
+        date = request.form.get("date", entry.date.strftime("%Y-%m-%d"))
         content = request.form.get("content", "").strip()
         if not title or not content:
             fehler = "Titel und Inhalt dürfen nicht leer sein."
         else:
             entry.title = title
-            entry.date = date
+            entry.date = datetime.strptime(date, "%Y-%m-%d").date()
             entry.content = content
             db.session.commit()
             return redirect(url_for("overview"))
@@ -135,7 +141,8 @@ def delete_entry(entry_id):
     user = get_current_user()
     if not user:
         return redirect(url_for("login"))
-    entry = Entry.query.filter_by(id=entry_id, username=user).first()
+    user_obj = User.query.filter_by(username=user).first()
+    entry = Entry.query.filter_by(id=entry_id, user_id=user_obj.id).first()
     if entry:
         db.session.delete(entry)
         db.session.commit()
@@ -146,12 +153,14 @@ def dashboard():
     user = get_current_user()
     if not user:
         return redirect(url_for("login"))
-    my_entries = Entry.query.filter_by(username=user).all()
+    user_obj = User.query.filter_by(username=user).first()
+    my_entries = Entry.query.filter_by(user_id=user_obj.id).all()
     pro_monat = {}
     for e in my_entries:
-        monat = e.date[:7]
+        monat = e.date.strftime("%Y-%m")
         pro_monat[monat] = pro_monat.get(monat, 0) + 1
     return render_template("dashboard.html", user=user, total=len(my_entries), pro_monat=dict(sorted(pro_monat.items())))
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5001)
+    debug = os.environ.get("FLASK_ENV") == "development"
+    app.run(debug=debug, port=5001)

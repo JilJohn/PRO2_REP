@@ -12,7 +12,7 @@
 {% set months = ["","Jan","Feb","Mär","Apr","Mai","Jun","Jul","Aug","Sep","Okt","Nov","Dez"] %}
 {% for entry in entries %}
 <div style="background: var(--paper); border: 1px solid var(--border); border-radius: 4px; padding: 20px; margin-bottom: 12px;">
-  <p style="font-size: 0.85rem; color: var(--muted); margin: 0 0 8px 0;">{{ entry.date[8:10] }}. {{ months[entry.date[5:7] | int] }} {{ entry.date[0:4] }}</p>
+  <p style="font-size: 0.85rem; color: var(--muted); margin: 0 0 8px 0;">{{ entry.date.day }}. {{ months[entry.date.month] }} {{ entry.date.year }}</p>
   <h3 style="margin: 0 0 8px 0; font-size: 1.1rem; font-weight: 600;">{{ entry.title }}</h3>
   <p style="color: var(--muted); font-size: 0.9rem; margin: 0 0 12px 0;">{{ entry.content[:150] }}{% if entry.content|length > 150 %}…{% endif %}</p>
   <div style="display: flex; gap: 8px;">
