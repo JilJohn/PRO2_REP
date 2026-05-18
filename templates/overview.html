@@ -9,29 +9,26 @@
 </div>
 
 {% if entries %}
-  {% set months = ["","Jan","Feb","Mär","Apr","Mai","Jun","Jul","Aug","Sep","Okt","Nov","Dez"] %}
-  
-  {% for entry in entries %}
-    <div style="background: var(--paper); border: 1px solid var(--border); border-radius: 4px; padding: 20px; margin-bottom: 12px;">
-      <p style="font-size: 0.85rem; color: var(--muted); margin: 0 0 8px 0;">{{ entry.date[8:10] }}. {{ months[entry.date[5:7] | int] }} {{ entry.date[0:4] }}</p>
-      <h3 style="margin: 0 0 8px 0; font-size: 1.1rem; font-weight: 600;">{{ entry.title }}</h3>
-      <p style="color: var(--muted); font-size: 0.9rem; margin: 0 0 12px 0;">{{ entry.content[:150] }}{% if entry.content|length > 150 %}…{% endif %}</p>
-      <div style="display: flex; gap: 8px;">
-        <a href="{{ url_for('entry_detail', entry_id=entry.id) }}" class="btn btn-secondary btn-sm">Lesen</a>
-        <a href="{{ url_for('edit_entry', entry_id=entry.id) }}" class="btn btn-secondary btn-sm">Bearbeiten</a>
-        <form method="post" action="{{ url_for('delete_entry', entry_id=entry.id) }}" onsubmit="return confirm('Löschen?');" style="margin: 0;">
-          <button type="submit" class="btn btn-danger btn-sm">Löschen</button>
-        </form>
-      </div>
-    </div>
-  {% endfor %}
-
-{% else %}
-  <div style="text-align: center; padding: 60px 20px; color: var(--muted);">
-    <h2 style="margin-bottom: 16px;">Noch keine Einträge</h2>
-    <p style="margin-bottom: 24px;">Schreibe deinen ersten Eintrag.</p>
-    <a href="{{ url_for('new_entry') }}" class="btn btn-primary">Eintrag schreiben</a>
+{% set months = ["","Jan","Feb","Mär","Apr","Mai","Jun","Jul","Aug","Sep","Okt","Nov","Dez"] %}
+{% for entry in entries %}
+<div style="background: var(--paper); border: 1px solid var(--border); border-radius: 4px; padding: 20px; margin-bottom: 12px;">
+  <p style="font-size: 0.85rem; color: var(--muted); margin: 0 0 8px 0;">{{ entry.date[8:10] }}. {{ months[entry.date[5:7] | int] }} {{ entry.date[0:4] }}</p>
+  <h3 style="margin: 0 0 8px 0; font-size: 1.1rem; font-weight: 600;">{{ entry.title }}</h3>
+  <p style="color: var(--muted); font-size: 0.9rem; margin: 0 0 12px 0;">{{ entry.content[:150] }}{% if entry.content|length > 150 %}…{% endif %}</p>
+  <div style="display: flex; gap: 8px;">
+    <a href="{{ url_for('entry_detail', entry_id=entry.id) }}" class="btn btn-secondary btn-sm">Lesen</a>
+    <a href="{{ url_for('edit_entry', entry_id=entry.id) }}" class="btn btn-secondary btn-sm">Bearbeiten</a>
+    <form method="post" action="{{ url_for('delete_entry', entry_id=entry.id) }}" onsubmit="return confirm('Löschen?');" style="margin: 0;">
+      <button type="submit" class="btn btn-danger btn-sm">Löschen</button>
+    </form>
   </div>
+</div>
+{% endfor %}
+{% else %}
+<div style="text-align: center; padding: 60px 20px; color: var(--muted);">
+  <h2 style="margin-bottom: 16px;">Noch keine Einträge</h2>
+  <p style="margin-bottom: 24px;">Schreibe deinen ersten Eintrag.</p>
+  <a href="{{ url_for('new_entry') }}" class="btn btn-primary">Eintrag schreiben</a>
+</div>
 {% endif %}
-
 {% endblock %}
