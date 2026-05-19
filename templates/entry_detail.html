@@ -6,7 +6,7 @@
 {% set months = ["","Jan","Feb","Mär","Apr","Mai","Jun","Jul","Aug","Sep","Okt","Nov","Dez"] %}
 <div class="page-header flex-between">
   <div>
-    <p style="font-size: 0.85rem; color: var(--muted);">{{ entry.date[8:10] }}. {{ months[entry.date[5:7] | int] }} {{ entry.date[0:4] }}</p>
+    <p style="font-size: 0.85rem; color: var(--muted);">{{ entry.date.day }}. {{ months[entry.date.month] }} {{ entry.date.year }}</p>
     <h1>{{ entry.title }}</h1>
   </div>
   <a href="{{ url_for('overview') }}" class="btn btn-secondary">← Zurück</a>

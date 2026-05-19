@@ -17,7 +17,7 @@
   </div>
   <div class="form-group">
     <label>Datum</label>
-    <input type="date" name="date" value="{{ entry.date }}" required>
+    <input type="date" name="date" value="{{ entry.date.strftime('%Y-%m-%d') }}" required>
   </div>
   <div class="form-group">
     <label>Inhalt</label>
@@ -32,4 +32,4 @@
 <form method="POST" action="{{ url_for('delete_entry', entry_id=entry.id) }}" onsubmit="return confirm('Eintrag wirklich löschen?');">
   <button type="submit" class="btn btn-danger">Eintrag löschen</button>
 </form>
-{% endblock %}
+{% endblock %} 

@@ -14,20 +14,22 @@
       <div style="font-size: 0.85rem; color: var(--muted); font-weight: 500; text-transform: uppercase;">Einträge</div>
       <div style="font-size: 2.5rem; font-weight: 700; color: var(--accent2); margin: 8px 0;">{{ total }}</div>
     </div>
+
     <div style="background: var(--paper); border: 1px solid var(--border); border-radius: 4px; padding: 20px; text-align: center; box-shadow: 0 1px 4px var(--shadow);">
       <div style="font-size: 0.85rem; color: var(--muted); font-weight: 500; text-transform: uppercase;">Monate</div>
-      <div style="font-size: 2.5rem; font-weight: 700; color: var(--accent2); margin: 8px 0;">{{ pro_monat | length }}</div>
+      <div style="font-size: 2.5rem; font-weight: 700; color: var(--accent2); margin: 8px 0;">{{ active_months }}</div>
     </div>
+
     <div style="background: var(--paper); border: 1px solid var(--border); border-radius: 4px; padding: 20px; text-align: center; box-shadow: 0 1px 4px var(--shadow);">
       <div style="font-size: 0.85rem; color: var(--muted); font-weight: 500; text-transform: uppercase;">Ø / Monat</div>
-      <div style="font-size: 2.5rem; font-weight: 700; color: var(--accent2); margin: 8px 0;">{{ (total / (pro_monat | length)) | round(1) }}</div>
+      <div style="font-size: 2.5rem; font-weight: 700; color: var(--accent2); margin: 8px 0;">{{ avg_per_month }}</div>
     </div>
   </div>
+  
   <h2>Nach Monat</h2>
   <div style="display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0;">
-    {% set months = ["","Jan","Feb","Mär","Apr","Mai","Jun","Jul","Aug","Sep","Okt","Nov","Dez"] %}
-    {% for monat in pro_monat.keys() | sort(reverse=True) %}
-      <div style="background: var(--paper); border: 1px solid var(--border); border-radius: 4px; padding: 8px 12px; font-size: 0.85rem;">{{ months[monat[5:7] | int] }} {{ monat[0:4] }}: <strong style="color: var(--accent2);">{{ pro_monat[monat] }}</strong></div>
+    {% for monat_key, count in months.items() %}
+      <div style="background: var(--paper); border: 1px solid var(--border); border-radius: 4px; padding: 8px 12px; font-size: 0.85rem;">{{ monat_key }}: <strong style="color: var(--accent2);">{{ count }}</strong></div>
     {% endfor %}
   </div>
 {% else %}

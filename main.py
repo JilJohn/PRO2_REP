@@ -33,6 +33,17 @@ with app.app_context():
 def get_current_user():
     return session.get("user")
 
+def get_user_or_redirect():
+    """Get User object from session or redirect to login."""
+    username = get_current_user()
+    if not username:
+        return redirect(url_for("login")), None
+    user_obj = User.query.filter_by(username=username).first()
+    if not user_obj:
+        session.clear()
+        return redirect(url_for("login")), None
+    return None, user_obj
+
 @app.route("/")
 def start():
     return redirect(url_for("overview" if get_current_user() else "login"))
@@ -76,90 +87,83 @@ def logout():
 
 @app.route("/overview")
 def overview():
-    user = get_current_user()
-    if not user:
-        return redirect(url_for("login"))
-    user_obj = User.query.filter_by(username=user).first()
-    if not user_obj:
-        session.clear()
-        return redirect(url_for("login"))
-    my_entries = Entry.query.filter_by(user_id=user_obj.id).order_by(Entry.date.desc()).all()
-    return render_template("overview.html", user=user, entries=my_entries)
+    redirect_response, user_obj = get_user_or_redirect()
+    if redirect_response:
+        return redirect_response
+    entries = Entry.query.filter_by(user_id=user_obj.id).order_by(Entry.id.desc()).all()
+    return render_template("overview.html", entries=entries)
 
 @app.route("/new", methods=["GET", "POST"])
 def new_entry():
-    user = get_current_user()
-    if not user:
-        return redirect(url_for("login"))
-    user_obj = User.query.filter_by(username=user).first()
-    if not user_obj:
-        session.clear()
-        return redirect(url_for("login"))
-    fehler = ""
+    redirect_response, user_obj = get_user_or_redirect()
+    if redirect_response:
+        return redirect_response
+    
     if request.method == "POST":
         title = request.form.get("title", "").strip()
-        date = request.form.get("date", datetime.now().strftime("%Y-%m-%d"))
+        date_str = request.form.get("date", "")
         content = request.form.get("content", "").strip()
-        if not title or not content:
-            fehler = "Titel und Inhalt dürfen nicht leer sein."
-        else:
-            entry = Entry(user_id=user_obj.id, title=title, date=datetime.strptime(date, "%Y-%m-%d").date(), content=content)
+        
+        if not all([title, date_str, content]):
+            return render_template("new_entry.html", today=datetime.now().strftime("%Y-%m-%d"))
+        
+        try:
+            date = datetime.strptime(date_str, "%Y-%m-%d").date()
+            entry = Entry(user_id=user_obj.id, title=title, date=date, content=content)
             db.session.add(entry)
             db.session.commit()
             return redirect(url_for("overview"))
-    today = datetime.now().strftime("%Y-%m-%d")
-    return render_template("new_entry.html", user=user, today=today, fehler=fehler)
+        except ValueError:
+            return render_template("new_entry.html", today=datetime.now().strftime("%Y-%m-%d"))
+    
+    return render_template("new_entry.html", today=datetime.now().strftime("%Y-%m-%d"))
 
 @app.route("/entry/<int:entry_id>")
 def entry_detail(entry_id):
-    user = get_current_user()
-    if not user:
-        return redirect(url_for("login"))
-    user_obj = User.query.filter_by(username=user).first()
-    if not user_obj:
-        session.clear()
-        return redirect(url_for("login"))
+    redirect_response, user_obj = get_user_or_redirect()
+    if redirect_response:
+        return redirect_response
+    
     entry = Entry.query.filter_by(id=entry_id, user_id=user_obj.id).first()
     if not entry:
-        return "Eintrag nicht gefunden.", 404
-    return render_template("entry_detail.html", user=user, entry=entry)
+        return redirect(url_for("overview"))
+    return render_template("entry_detail.html", entry=entry)
 
 @app.route("/edit/<int:entry_id>", methods=["GET", "POST"])
 def edit_entry(entry_id):
-    user = get_current_user()
-    if not user:
-        return redirect(url_for("login"))
-    user_obj = User.query.filter_by(username=user).first()
-    if not user_obj:
-        session.clear()
-        return redirect(url_for("login"))
+    redirect_response, user_obj = get_user_or_redirect()
+    if redirect_response:
+        return redirect_response
+    
     entry = Entry.query.filter_by(id=entry_id, user_id=user_obj.id).first()
     if not entry:
-        return "Eintrag nicht gefunden.", 404
-    fehler = ""
+        return redirect(url_for("overview"))
+    
     if request.method == "POST":
         title = request.form.get("title", "").strip()
-        date = request.form.get("date", entry.date.strftime("%Y-%m-%d"))
+        date_str = request.form.get("date", "")
         content = request.form.get("content", "").strip()
-        if not title or not content:
-            fehler = "Titel und Inhalt dürfen nicht leer sein."
-        else:
+        
+        if not all([title, date_str, content]):
+            return render_template("edit_entry.html", entry=entry)
+        
+        try:
             entry.title = title
-            entry.date = datetime.strptime(date, "%Y-%m-%d").date()
+            entry.date = datetime.strptime(date_str, "%Y-%m-%d").date()
             entry.content = content
             db.session.commit()
-            return redirect(url_for("overview"))
-    return render_template("edit_entry.html", user=user, entry=entry, fehler=fehler)
+            return redirect(url_for("entry_detail", entry_id=entry.id))
+        except ValueError:
+            return render_template("edit_entry.html", entry=entry)
+    
+    return render_template("edit_entry.html", entry=entry)
 
 @app.route("/delete/<int:entry_id>", methods=["POST"])
 def delete_entry(entry_id):
-    user = get_current_user()
-    if not user:
-        return redirect(url_for("login"))
-    user_obj = User.query.filter_by(username=user).first()
-    if not user_obj:
-        session.clear()
-        return redirect(url_for("login"))
+    redirect_response, user_obj = get_user_or_redirect()
+    if redirect_response:
+        return redirect_response
+    
     entry = Entry.query.filter_by(id=entry_id, user_id=user_obj.id).first()
     if entry:
         db.session.delete(entry)
@@ -168,19 +172,22 @@ def delete_entry(entry_id):
 
 @app.route("/dashboard")
 def dashboard():
-    user = get_current_user()
-    if not user:
-        return redirect(url_for("login"))
-    user_obj = User.query.filter_by(username=user).first()
-    if not user_obj:
-        session.clear()
-        return redirect(url_for("login"))
-    my_entries = Entry.query.filter_by(user_id=user_obj.id).all()
-    pro_monat = {}
-    for e in my_entries:
-        monat = e.date.strftime("%Y-%m")
-        pro_monat[monat] = pro_monat.get(monat, 0) + 1
-    return render_template("dashboard.html", user=user, total=len(my_entries), pro_monat=dict(sorted(pro_monat.items())))
+    redirect_response, user_obj = get_user_or_redirect()
+    if redirect_response:
+        return redirect_response
+    
+    entries = Entry.query.filter_by(user_id=user_obj.id).all()
+    total = len(entries)
+    
+    months = {}
+    for entry in entries:
+        month = entry.date.strftime("%B %Y")
+        months[month] = months.get(month, 0) + 1
+    
+    active_months = len(months)
+    avg_per_month = round(total / active_months, 1) if active_months > 0 else 0
+    
+    return render_template("dashboard.html", total=total, active_months=active_months, avg_per_month=avg_per_month, months=months)
 
 if __name__ == "__main__":
     debug = os.environ.get("FLASK_ENV") == "development"
