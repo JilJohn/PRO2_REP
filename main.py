@@ -3,6 +3,9 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from bcrypt import hashpw, gensalt, checkpw
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///tagebuch.db'
@@ -77,6 +80,9 @@ def overview():
     if not user:
         return redirect(url_for("login"))
     user_obj = User.query.filter_by(username=user).first()
+    if not user_obj:
+        session.clear()
+        return redirect(url_for("login"))
     my_entries = Entry.query.filter_by(user_id=user_obj.id).order_by(Entry.date.desc()).all()
     return render_template("overview.html", user=user, entries=my_entries)
 
@@ -84,6 +90,10 @@ def overview():
 def new_entry():
     user = get_current_user()
     if not user:
+        return redirect(url_for("login"))
+    user_obj = User.query.filter_by(username=user).first()
+    if not user_obj:
+        session.clear()
         return redirect(url_for("login"))
     fehler = ""
     if request.method == "POST":
@@ -93,7 +103,6 @@ def new_entry():
         if not title or not content:
             fehler = "Titel und Inhalt dürfen nicht leer sein."
         else:
-            user_obj = User.query.filter_by(username=user).first()
             entry = Entry(user_id=user_obj.id, title=title, date=datetime.strptime(date, "%Y-%m-%d").date(), content=content)
             db.session.add(entry)
             db.session.commit()
@@ -107,6 +116,9 @@ def entry_detail(entry_id):
     if not user:
         return redirect(url_for("login"))
     user_obj = User.query.filter_by(username=user).first()
+    if not user_obj:
+        session.clear()
+        return redirect(url_for("login"))
     entry = Entry.query.filter_by(id=entry_id, user_id=user_obj.id).first()
     if not entry:
         return "Eintrag nicht gefunden.", 404
@@ -118,6 +130,9 @@ def edit_entry(entry_id):
     if not user:
         return redirect(url_for("login"))
     user_obj = User.query.filter_by(username=user).first()
+    if not user_obj:
+        session.clear()
+        return redirect(url_for("login"))
     entry = Entry.query.filter_by(id=entry_id, user_id=user_obj.id).first()
     if not entry:
         return "Eintrag nicht gefunden.", 404
@@ -142,6 +157,9 @@ def delete_entry(entry_id):
     if not user:
         return redirect(url_for("login"))
     user_obj = User.query.filter_by(username=user).first()
+    if not user_obj:
+        session.clear()
+        return redirect(url_for("login"))
     entry = Entry.query.filter_by(id=entry_id, user_id=user_obj.id).first()
     if entry:
         db.session.delete(entry)
@@ -154,6 +172,9 @@ def dashboard():
     if not user:
         return redirect(url_for("login"))
     user_obj = User.query.filter_by(username=user).first()
+    if not user_obj:
+        session.clear()
+        return redirect(url_for("login"))
     my_entries = Entry.query.filter_by(user_id=user_obj.id).all()
     pro_monat = {}
     for e in my_entries:
@@ -163,4 +184,4 @@ def dashboard():
 
 if __name__ == "__main__":
     debug = os.environ.get("FLASK_ENV") == "development"
-    app.run(debug=debug, port=5001)
+    app.run(debug=debug, port=5002)
