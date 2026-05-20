@@ -5,41 +5,57 @@
 {% block content %}
 <div class="page-header flex-between">
   <h1>Dashboard</h1>
+    <!-- Button für Navigation: führt zur Route "new_entry" -->
   <a href="{{ url_for('new_entry') }}" class="btn btn-primary">+ Neuer Eintrag</a>
 </div>
 
+<!--`total > 0` = "Gibt es Einträge?" JA: Dashboard mit Daten anzeigen, NEIN: Noch keine Einträge -->
 {% if total > 0 %}
+
+<!-- Container für Dashboard-Statistiken -->
   <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin: 24px 0;">
+    
+    <!-- KARTENBLOCK 1: Gesamtanzahl Einträge -->
     <div style="background: var(--paper); border: 1px solid var(--border); border-radius: 4px; padding: 20px; text-align: center; box-shadow: 0 1px 4px var(--shadow);">
       <div style="font-size: 0.85rem; color: var(--muted); font-weight: 500; text-transform: uppercase;">Einträge</div>
       <div style="font-size: 2.5rem; font-weight: 700; color: var(--accent2); margin: 8px 0;">{{ total }}</div>
     </div>
-
+    
+    <!-- KARTENBLOCK 2: Anzahl aktiver Monate -->
     <div style="background: var(--paper); border: 1px solid var(--border); border-radius: 4px; padding: 20px; text-align: center; box-shadow: 0 1px 4px var(--shadow);">
       <div style="font-size: 0.85rem; color: var(--muted); font-weight: 500; text-transform: uppercase;">Monate</div>
       <div style="font-size: 2.5rem; font-weight: 700; color: var(--accent2); margin: 8px 0;">{{ active_months }}</div>
     </div>
 
+    <!-- KARTENBLOCK 3: Durchschnitt pro Monat -->
     <div style="background: var(--paper); border: 1px solid var(--border); border-radius: 4px; padding: 20px; text-align: center; box-shadow: 0 1px 4px var(--shadow);">
       <div style="font-size: 0.85rem; color: var(--muted); font-weight: 500; text-transform: uppercase;">Ø / Monat</div>
       <div style="font-size: 2.5rem; font-weight: 700; color: var(--accent2); margin: 8px 0;">{{ avg_per_month }}</div>
     </div>
   </div>
-  
+
+  <!-- Monatsübersicht (nur sichtbar, wenn total > 0) -->
   <h2>Nach Monat</h2>
   <div style="display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0;">
+    <!-- Schleife über Backend-Daten: months = Dictionary {Monat: Anzahl Einträge} -->
     {% for monat_key, count in months.items() %}
       <div style="background: var(--paper); border: 1px solid var(--border); border-radius: 4px; padding: 8px 12px; font-size: 0.85rem;">{{ monat_key }}: <strong style="color: var(--accent2);">{{ count }}</strong></div>
     {% endfor %}
   </div>
+
+<!-- ELSE-Zweig: wird angezeigt, wenn total == 0 -->
 {% else %}
+  <!-- Empty State: führt Nutzer zur ersten Aktion -->
   <div style="text-align: center; padding: 40px 20px;">
     <p style="font-size: 1.1rem; margin-bottom: 16px;">Noch keine Einträge</p>
     <p style="color: var(--muted); margin-bottom: 24px;">Schreibe deinen ersten Eintrag.</p>
     <a href="{{ url_for('new_entry') }}" class="btn btn-primary">Eintrag schreiben</a>
   </div>
 {% endif %}
+
+<!-- Navigation zurück zur Gesamtübersicht -->
 <div style="margin-top: 32px;">
+   <!-- führt zur Route "overview" -->
   <a href="{{ url_for('overview') }}" class="btn btn-secondary">← Übersicht</a>
 </div>
 {% endblock %}
