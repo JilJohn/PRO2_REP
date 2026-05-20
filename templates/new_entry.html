@@ -8,14 +8,19 @@
   <a href="{{ url_for('overview') }}" class="btn btn-secondary">← Zurück</a>
 </div>
 
+<!-- FEHLERANZEIGE: -->
 {% if fehler %}<div class="alert alert-error">{{ fehler }}</div>{% endif %}
 
+<!-- FORMULAR: neuer Tagebucheintrag -->
+<!-- method POST → sendet Daten an Backend-Route "new_entry" -->
 <form method="post" style="background: var(--paper); border: 1px solid var(--border); border-radius: 4px; padding: 24px; box-shadow: 0 2px 12px var(--shadow);">
   <div class="form-group">
+    <!-- Eingabe: Titel des Eintrags -->
     <label>Titel</label>
     <input type="text" name="title" style="background: transparent; border: none; border-bottom: 2px solid var(--border); border-radius: 0; font-family: inherit; font-size: 1.3rem; font-weight: 600; padding: 4px 0; margin-bottom: 16px; width: 100%; box-sizing: border-box;" required autofocus>
   </div>
   <div class="form-group">
+     <!-- Eingabe: Datum des Eintrags -->
     <label>Datum</label>
     <input type="date" name="date" value="{{ today }}" style="background: transparent; border: none; border-bottom: 1px solid var(--border); border-radius: 0; font-size: 0.9rem; color: var(--muted); padding: 4px 0; margin-bottom: 16px; width: 100%; box-sizing: border-box;" required>
   </div>
@@ -23,8 +28,12 @@
     <label>Inhalt</label>
     <textarea name="content" rows="10" style="background: transparent; border: none; font-family: inherit; padding: 0; width: 100%; box-sizing: border-box;" required></textarea>
   </div>
+
+  <!-- ACTIONS: Abbrechen oder Speichern -->
   <div style="margin-top: 20px; display: flex; gap: 12px; justify-content: flex-end;">
+    <!-- ABBRECHEN:führt zurück zur Übersicht OHNE Speichern -->
     <a href="{{ url_for('overview') }}" class="btn btn-secondary">Abbrechen</a>
+    <!-- SPEICHERN:sendet POST → Backend erstellt neuen Eintrag -->
     <button type="submit" class="btn btn-primary">Speichern</button>
   </div>
 </form>

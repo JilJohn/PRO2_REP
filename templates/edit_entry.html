@@ -4,12 +4,16 @@
 
 {% block content %}
 <div class="page-header flex-between">
+  <!--Bearbeitungsmodus -->
   <h1>Eintrag bearbeiten</h1>
+  <!-- führt zurück zur Übersicht aller Tagebucheinträge -->
   <a href="{{ url_for('overview') }}" class="btn btn-secondary">← Zurück</a>
 </div>
 
 {% if fehler %}<div class="alert alert-error">{{ fehler }}</div>{% endif %}
 
+<!-- FORMULAR: Bearbeiten eines bestehenden Eintrags -->
+<!-- Methode POST → Daten werden ans Backend gesendet -->
 <form method="POST" style="margin-bottom: 32px;">
   <div class="form-group">
     <label>Titel</label>
@@ -18,17 +22,22 @@
   <div class="form-group">
     <label>Datum</label>
     <input type="date" name="date" value="{{ entry.date.strftime('%Y-%m-%d') }}" required>
+  <!-- Backend muss datetime -> string umwandeln -->
   </div>
   <div class="form-group">
     <label>Inhalt</label>
     <textarea name="content" rows="8" required>{{ entry.content }}</textarea>
   </div>
   <div style="display: flex; gap: 12px;">
+    <!-- führt POST-Request aus → aktualisiert Eintrag im Backend -->
     <button type="submit" class="btn btn-primary">Speichern</button>
+    <!-- bricht Bearbeitung ab → zurück zur Übersicht -->
     <a href="{{ url_for('overview') }}" class="btn btn-secondary">Abbrechen</a>
   </div>
 </form>
 
+<!-- LÖSCHEN-FORMULAR (eigener Button) -->
+<!-- wichtig: eigener POST-Endpunkt nur für Delete -->
 <form method="POST" action="{{ url_for('delete_entry', entry_id=entry.id) }}" onsubmit="return confirm('Eintrag wirklich löschen?');">
   <button type="submit" class="btn btn-danger">Eintrag löschen</button>
 </form>
