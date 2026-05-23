@@ -3,24 +3,40 @@
 {% block title %}Registrieren – Tagebuch{% endblock %}
 
 {% block content %}
+<!-- ZENTRIERTER CONTAINER: sorgt dafür, dass das Formular vertikal und horizontal in der Mitte der Seite steht -->
 <div style="min-height: calc(100vh - 56px); display: flex; align-items: center; justify-content: center; padding: 40px 24px; margin: -40px -24px;">
+  <!-- CARD / FORMULAR-BOX: visuelle Box für das Registrierungsformular -->
   <div style="background: var(--paper); border: 1px solid var(--border); border-radius: 4px; padding: 44px 48px; width: 100%; max-width: 420px; box-shadow: 0 4px 24px var(--shadow);">
+    <!-- LOGO / TITEL -->
     <div style="font-size: 2rem; font-weight: 700; text-align: center; margin-bottom: 24px;"><span style="color: var(--accent2);">Tagebuch</span></div>
+    <!-- UNTERTITEL -->
     <div style="text-align: center; color: var(--muted); font-size: 0.82rem; margin-bottom: 32px;">Konto erstellen</div>
-    {% if fehler %}<div class="alert alert-error">{{ fehler }}</div>{% endif %}
+    <!-- FEHLERANZEIGE: wird angezeigt, wenn Backend Fehler zurückgibt (z.B. Username existiert bereits) -->
+    {% if fehler %}
+        <div class="alert alert-error">{{ fehler }}</div>
+    {% endif %}
+    <!-- REGISTRIERUNGS-FORMULAR: sendet Daten per POST an Flask-Route "register" -->
     <form method="post" action="{{ url_for('register') }}">
+      <!-- USERNAME-FELD -->
       <div class="form-group">
         <label for="username">Benutzername</label>
-        <input type="text" id="username" name="username" placeholder="Wähle einen Benutzernamen" autocomplete="username">
+         <!-- Eingabe: wird als "username" ans Backend gesendet -->
+         <input type="text" id="username" name="username" placeholder="Wähle einen Benutzernamen" autocomplete="username">
       </div>
+      <!-- PASSWORT-FELD -->
       <div class="form-group">
         <label for="password">Passwort</label>
+        <!-- Eingabe: wird als "password" ans Backend gesendet -->
         <input type="password" id="password" name="password" placeholder="Wähle ein Passwort" autocomplete="new-password">
       </div>
+      <!-- SUBMIT-BUTTON: sendet Formular an /register Route -->
       <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 8px;">Konto erstellen</button>
     </form>
+    <!-- LOGIN-LINK: führt zur Login-Seite (Route: login) -->
     <div style="text-align: center; margin-top: 20px; font-size: 0.85rem; color: var(--muted);">
-      Bereits registriert? <a href="{{ url_for('login') }}" style="color: var(--accent); text-decoration: none; font-weight: 700;">Jetzt anmelden</a>
+      Bereits registriert? 
+      <!-- Navigation zur Login-Seite -->
+      <a href="{{ url_for('login') }}" style="color: var(--accent); text-decoration: none; font-weight: 700;">Jetzt anmelden</a>
     </div>
   </div>
 </div>
