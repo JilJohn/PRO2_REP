@@ -4,9 +4,9 @@
 
 {% block content %}
 <div class="page-header flex-between">
-  <!--Bearbeitungsmodus -->
+  <!--Erste Zeile, Titel -->
   <h1>Eintrag bearbeiten</h1>
-  <!-- führt zurück zur Übersicht aller Tagebucheinträge -->
+  <!-- zurück Button -->
   <a href="{{ url_for('overview') }}" class="btn btn-secondary">← Zurück</a>
 </div>
 
@@ -15,19 +15,25 @@
 <!-- FORMULAR: Bearbeiten eines bestehenden Eintrags -->
 <!-- Methode POST → Daten werden ans Backend gesendet -->
 <form method="POST" style="margin-bottom: 32px;">
+  
+  <!-- Kästchen Titel-->
   <div class="form-group">
     <label>Titel</label>
+    <!-- Textfeld-->
     <input type="text" name="title" value="{{ entry.title }}" required>
   </div>
+  <!-- Kästchen Datum -->
   <div class="form-group">
     <label>Datum</label>
     <input type="date" name="date" value="{{ entry.date.strftime('%Y-%m-%d') }}" required>
   <!-- Backend muss datetime -> string umwandeln -->
   </div>
+  <!-- Kästchen Inhalt -->
   <div class="form-group">
     <label>Inhalt</label>
     <textarea name="content" rows="8" required>{{ entry.content }}</textarea>
   </div>
+  <!-- speichern oder abbrechen button-->
   <div style="display: flex; gap: 12px;">
     <!-- führt POST-Request aus → aktualisiert Eintrag im Backend -->
     <button type="submit" class="btn btn-primary">Speichern</button>

@@ -9,23 +9,25 @@
 <!-- HEADER: Metadaten + Navigation -->
 <div class="page-header flex-between">
   <div>
-    <!-- zeigt Datum des Eintrags -->
+    <!-- Datum des Eintrags -->
     <p style="font-size: 0.85rem; color: var(--muted);">{{ entry.date.day }}. {{ months[entry.date.month] }} {{ entry.date.year }}</p>
-    <!-- Haupttitel des Tagebucheintrags -->
+    <!-- Titel des Tagebucheintrags -->
     <h1>{{ entry.title }}</h1>
   </div>
-  <!-- NAVIGATION: zurück zur Übersicht aller Einträge -->
+  <!-- Button "zurück" zur Übersicht -->
   <a href="{{ url_for('overview') }}" class="btn btn-secondary">← Zurück</a>
 </div>
+
+<!-- Inhalt / Fliesstext -->
 <div style="background: var(--paper); border: 1px solid var(--border); border-radius: 4px; padding: 24px; margin: 24px 0;">
   <p style="line-height: 1.8;">{{ entry.content }}</p>
 </div>
 
-<!-- ACTIONS: Bearbeiten / Löschen -->
+<!-- Button: Bearbeiten / Löschen -->
 <div style="display: flex; gap: 12px;">
-    <!-- EDIT: führt zur Edit-Seite dieses spezifischen Eintrags -->
+  <!-- EDIT: führt zur Edit-Seite dieses spezifischen Eintrags -->
   <a href="{{ url_for('edit_entry', entry_id=entry.id) }}" class="btn btn-primary">Bearbeiten</a>
-    <!-- DELETE:sendet POST-Request an Backend-Route delete_entry -->
+       <!-- DELETE:sendet POST-Request an Backend-Route delete_entry -->
        <form method="POST" action="{{ url_for('delete_entry', entry_id=entry.id) }}" onsubmit="return confirm('Eintrag wirklich löschen?');" style="margin: 0;">
      <!-- führt im Backend zur Löschlogik für entry.id -->
      <button type="submit" class="btn btn-danger">Löschen</button>

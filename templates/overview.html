@@ -5,9 +5,9 @@
 {% block content %}
 <div class="page-header flex-between">
 
-  <!-- zeigt: Liste aller Einträge -->
+  <!-- Titel "Deine Einträge": zeigt Liste mit allen Einträgen -->
   <h1>Deine Einträge</h1>
-  <!-- führt zur Route "new_entry" (neuer Tagebucheintrag) -->
+  <!-- Button führt zur Route "new_entry" (neuer Tagebucheintrag) -->
   <a href="{{ url_for('new_entry') }}" class="btn btn-primary">+ Neuer Eintrag</a>
 </div>
 
@@ -17,6 +17,7 @@
 {% set months = ["","Jan","Feb","Mär","Apr","Mai","Jun","Jul","Aug","Sep","Okt","Nov","Dez"] %}
 <!-- Schleife über alle Einträge aus Backend -->
 {% for entry in entries %}
+
 <!-- CARD: zeigt einen einzelnen Tagebucheintrag -->
 <div style="background: var(--paper); border: 1px solid var(--border); border-radius: 4px; padding: 20px; margin-bottom: 12px;">
     <!-- Datum des Eintrags  Tag / Monat / Jahr -->

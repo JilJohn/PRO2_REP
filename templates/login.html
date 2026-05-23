@@ -3,33 +3,40 @@
 {% block title %}Anmelden – Tagebuch{% endblock %}
 
 {% block content %}
-<!-- FULLSCREEN-CONTAINER: zentriert Login-Box vertikal und horizontal -->
+<!-- FULLSCREEN-CONTAINER: Login anzeige -->
 <div style="min-height: calc(100vh - 56px); display: flex; align-items: center; justify-content: center; padding: 40px 24px; margin: -40px -24px;">
    <!-- LOGIN-CARD -->
    <div style="background: var(--paper); border: 1px solid var(--border); border-radius: 4px; padding: 44px 48px; width: 100%; max-width: 420px; box-shadow: 0 4px 24px var(--shadow);">
-    <!-- Titel der App -->
+    <!-- Container Titel -->
     <div style="font-size: 2rem; font-weight: 700; text-align: center; margin-bottom: 24px;">
+      <!-- Text Titel ->
       <span style="color: var(--accent2);">Tagebuch</span>
     </div>
 
-    <!-- FEHLERMELDUNG: kommt aus Backend (z. B. falsches Passwort) -->
+  <!--FEHLERMELDUNG: kommt aus Backend (z. B. falsches Passwort) -->
     {% if fehler %}<div class="alert alert-error">{{ fehler }}</div>{% endif %}
+    
     <!-- LOGIN-FORMULAR -->
     <form method="post">
+      <!-- Container Benutzername und Eingabefeld -->
       <div class="form-group">
-        <!-- Eingabe: Benutzername -->
+        <!-- Benutzername -->
         <label for="username">Benutzername</label>
-        <!-- wird an Backend gesendet: request.form['username'] -->
+        <!-- wird an Backend gesendet: request.form['username'] / Eingabefeld -->
         <input type="text" id="username" name="username" required>
       </div>
+      <!-- Container Passwort und Eingabefeld -->
       <div class="form-group">
-        <!-- Eingabe: Passwort -->
+        <!-- Passwort -->
         <label for="password">Passwort</label>
-        <!-- type=password maskiert Eingabe im Browser -->
+        <!-- Eingabefeld -->
         <input type="password" id="password" name="password" required>
       </div>
+        <!-- SUBMIT-BUTTON: sendet Formular an /login Route -->
       <button type="submit" class="btn btn-primary" style="width: 100%;">Anmelden</button>
     </form>
+
+      <!-- REGISTRIEREN-LINK: führt zur Registrierungsseite (Route: register) -->
     <div style="text-align: center; margin-top: 20px; font-size: 0.85rem; color: var(--muted);">
       Noch kein Konto? 
       <!-- führt zur Route "register" -->

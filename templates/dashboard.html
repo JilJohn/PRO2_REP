@@ -5,19 +5,21 @@
 {% block content %}
 <div class="page-header flex-between">
   <h1>Dashboard</h1>
-    <!-- Button für Navigation: führt zur Route "new_entry" -->
+    <!-- Button "Neuer Eintrag" führt zur Route "new_entry" -->
   <a href="{{ url_for('new_entry') }}" class="btn btn-primary">+ Neuer Eintrag</a>
 </div>
 
 <!--`total > 0` = "Gibt es Einträge?" JA: Dashboard mit Daten anzeigen, NEIN: Noch keine Einträge -->
 {% if total > 0 %}
 
-<!-- Container für Dashboard-Statistiken -->
+<!-- Container für Dashboard-Statistiken: 3 (Einträge, Monat, Durchschnitt) -->
   <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin: 24px 0;">
     
     <!-- KARTENBLOCK 1: Gesamtanzahl Einträge -->
     <div style="background: var(--paper); border: 1px solid var(--border); border-radius: 4px; padding: 20px; text-align: center; box-shadow: 0 1px 4px var(--shadow);">
+      <!-- Text / Überschrift: Einträge-->
       <div style="font-size: 0.85rem; color: var(--muted); font-weight: 500; text-transform: uppercase;">Einträge</div>
+      <!-- "Feld" mit aktualisierter Zahl-->
       <div style="font-size: 2.5rem; font-weight: 700; color: var(--accent2); margin: 8px 0;">{{ total }}</div>
     </div>
     
