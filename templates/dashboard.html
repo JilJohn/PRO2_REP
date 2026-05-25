@@ -10,7 +10,7 @@
 </div>
 
 <!--`total > 0` = "Gibt es Einträge?" JA: Dashboard mit Daten anzeigen, NEIN: Noch keine Einträge -->
-{% if total > 0 %}
+{% if total > 0 %} <!-- nur wenn mindestens 1 Eintrag existiert, wird das Dashboard mit Statistiken angezeigt -->
 
 <!-- Container für Dashboard-Statistiken: 3 (Einträge, Monat, Durchschnitt) -->
   <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin: 24px 0;">
