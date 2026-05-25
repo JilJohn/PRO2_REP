@@ -14,7 +14,6 @@
 <!-- FALL 1: Prüft, ob Einträge vorhanden sind -->
 {% if entries %}
 <!-- Monatsnamen für bessere Datumsanzeige -->
- <!-- Verwendung: {{ months[entry.date.month] }} {# ergibt z.B. 'Mai' #} -->
 {% set months = ["","Jan","Feb","Mär","Apr","Mai","Jun","Jul","Aug","Sep","Okt","Nov","Dez"] %}
 <!-- Schleife über alle Einträge aus Backend -->
 {% for entry in entries %}
